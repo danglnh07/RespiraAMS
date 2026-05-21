@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="RespiraAMS.API/RespiraAMS.API.csproj" />
+  <Project Path="RespiraAMS.Core/RespiraAMS.Core.csproj" />
+  <Project Path="RespiraAMS.Infrastructure/RespiraAMS.Infrastructure.csproj" />
+</Solution>
