@@ -12,13 +12,14 @@ Create database
 
 ```bash
 cd backend/RespiraAMS
-dotnet ef database update --project RespiraAMS.Infrastructure --startup-project RespiraAMS.API
+dotnet ef database update --project Infrastructure/RespiraAMS.Infrastructure --startup-project Presentation/RespiraAMS.API
+
 ```
 
 Run the project
 
 ```bash
-dotnet run --project RespiraAMS.API
+dotnet run --project Presentation/RespiraAMS.API
 ```
 
 Visit the API document at: `http://localhost:5000/scalar`

@@ -1,5 +1,15 @@
 <Solution>
-  <Project Path="RespiraAMS.API/RespiraAMS.API.csproj" />
-  <Project Path="RespiraAMS.Core/RespiraAMS.Core.csproj" />
-  <Project Path="RespiraAMS.Infrastructure/RespiraAMS.Infrastructure.csproj" />
+  <Folder Name="/BuildingBlocks/">
+    <Project Path="BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj" />
+  </Folder>
+  <Folder Name="/Core/">
+    <Project Path="Core/RespiraAMS.Application/RespiraAMS.Application.csproj" />
+    <Project Path="Core/RespiraAMS.Domain/RespiraAMS.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="Infrastructure/RespiraAMS.Infrastructure/RespiraAMS.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Presentation/">
+    <Project Path="Presentation/RespiraAMS.API/RespiraAMS.API.csproj" />
+  </Folder>
 </Solution>

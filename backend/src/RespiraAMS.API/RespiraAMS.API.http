@@ -1,6 +1,0 @@
-@RespiraAMS.API_HostAddress = http://localhost:5232
-
-GET {{RespiraAMS.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
