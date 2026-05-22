@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using RespiraAMS.Application.Dtos;
 
 namespace RespiraAMS.Application.Services.Contracts;

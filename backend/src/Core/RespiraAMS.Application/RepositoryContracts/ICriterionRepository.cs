@@ -1,4 +1,6 @@
-﻿using RespiraAMS.Domain.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using RespiraAMS.Domain.Models;
 
 namespace RespiraAMS.Application.RepositoryContracts;
 

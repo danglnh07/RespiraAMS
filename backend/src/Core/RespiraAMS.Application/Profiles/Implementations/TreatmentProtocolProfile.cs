@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using RespiraAMS.Application.Dtos;
 using RespiraAMS.Application.Profiles.Contracts;
 using RespiraAMS.Domain.Models;

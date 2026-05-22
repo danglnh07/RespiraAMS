@@ -1,4 +1,8 @@
-﻿using RespiraAMS.Domain.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using RespiraAMS.Domain.Models;
 using X.PagedList;
 
 namespace RespiraAMS.Application.RepositoryContracts;

@@ -1,4 +1,5 @@
-﻿using RespiraAMS.Application.Dtos;
+﻿using System.Collections.Generic;
+using RespiraAMS.Application.Dtos;
 using X.PagedList;
 
 namespace RespiraAMS.Application.Profiles.Contracts;

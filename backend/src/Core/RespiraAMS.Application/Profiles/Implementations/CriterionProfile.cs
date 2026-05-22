@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using RespiraAMS.Application.Dtos;
 using RespiraAMS.Application.Profiles.Contracts;
 using RespiraAMS.Domain.Enums;
+using RespiraAMS.Domain.Exceptions;
 using RespiraAMS.Domain.Models;
 using X.PagedList;
 using X.PagedList.Extensions;
@@ -22,7 +24,7 @@ public class CriterionProfile : IProfile<CriterionDtoRequest, Criterion, Criteri
                 Unit =  req.Unit ?? "",
                 IsExclusive = req.IsExclusive ?? false,
             },
-            _ => throw new Exception("Unknown Criterion type")
+            _ => throw new UnexpectedException("Unknown Criterion type")
         };
     }
 
@@ -41,7 +43,7 @@ public class CriterionProfile : IProfile<CriterionDtoRequest, Criterion, Criteri
                 ((NumericCriterion)model).IsExclusive = req.IsExclusive ?? false;
                 break;
             default:
-                throw new Exception();
+                throw new UnexpectedException("Unexpected type for criterion");
         }
 
         return model;
