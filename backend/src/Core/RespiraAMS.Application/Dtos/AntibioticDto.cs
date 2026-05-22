@@ -13,8 +13,8 @@ public class AntibioticDtoRequest
     public AwareCategory Category { get; set; }
     [Description("Route of Administration. The value can either be number or string (case insensitive) value)")]
     public List<RouteOfAdministration> RouteOfAdministrations { get; set; } = [];
-    [Description("Medicine dosages, in the form of \"RouteOfAdministration\": \"string\"")]
-    public Dictionary<RouteOfAdministration, string> Dosages { get; set; } = [];
+    [Description("Medicine dosages, in the form of \"RouteOfAdministration\": \"List<string>\"")]
+    public Dictionary<RouteOfAdministration, List<string>> Dosages { get; set; } = [];
 }
 
 public class AntibioticDtoResponse
@@ -30,5 +30,5 @@ public class AntibioticDtoResponse
     [Description("Route of Administration")]
     public List<RouteOfAdministration> RouteOfAdministrations { get; set; } = [];
     [Description("Medicine dosages")]
-    public Dictionary<RouteOfAdministration, string> Dosages { get; set; } = [];
+    public Dictionary<RouteOfAdministration, List<string>> Dosages { get; set; } = [];
 }
