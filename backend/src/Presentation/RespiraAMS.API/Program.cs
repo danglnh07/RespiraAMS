@@ -48,4 +48,13 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Run database seeding
+using (var scope = app.Services.CreateScope())
+{
+    var provider = scope.ServiceProvider;
+    var context = provider.GetRequiredService<AppDbContext>();
+    var logger = provider.GetRequiredService<ILogger<DbInitializer>>();
+    await DbInitializer.InitializeAsync(context, logger);
+}
+
 app.Run();
