@@ -2,10 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RespiraAMS.Application.Dtos;
 using RespiraAMS.Application.Profiles.Implementations;
+using RespiraAMS.Application.RepositoryContracts;
 using RespiraAMS.Application.Services.Contracts;
 using RespiraAMS.Domain.Exceptions;
 using RespiraAMS.Domain.Models;
-using RespiraAMS.Domain.RepositoryContracts;
 
 namespace RespiraAMS.Application.Services.Implementations;
 

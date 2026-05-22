@@ -1,5 +1,5 @@
-﻿using RespiraAMS.Domain.Models;
-using RespiraAMS.Domain.RepositoryContracts;
+﻿using RespiraAMS.Application.RepositoryContracts;
+using RespiraAMS.Domain.Models;
 using RespiraAMS.Infrastructure.Data;
 
 namespace RespiraAMS.Infrastructure.Repositories;

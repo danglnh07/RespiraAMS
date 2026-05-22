@@ -1,7 +1,7 @@
 ﻿using RespiraAMS.Domain.Models;
 using X.PagedList;
 
-namespace RespiraAMS.Domain.RepositoryContracts;
+namespace RespiraAMS.Application.RepositoryContracts;
 
 public interface IGenericRepository<T> where T : Base
 {

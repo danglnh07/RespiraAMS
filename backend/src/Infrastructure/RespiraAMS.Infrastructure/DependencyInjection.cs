@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RespiraAMS.Domain.RepositoryContracts;
+using RespiraAMS.Application.RepositoryContracts;
 using RespiraAMS.Infrastructure.Repositories;
 
 namespace RespiraAMS.Infrastructure;

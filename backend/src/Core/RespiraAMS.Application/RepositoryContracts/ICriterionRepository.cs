@@ -1,6 +1,6 @@
 ﻿using RespiraAMS.Domain.Models;
 
-namespace RespiraAMS.Domain.RepositoryContracts;
+namespace RespiraAMS.Application.RepositoryContracts;
 
 public interface ICriterionRepository : IGenericRepository<Criterion>
 {
