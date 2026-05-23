@@ -44,6 +44,7 @@ public class TreatmentProtocolProfile(
         return new TreatmentProtocolDtoResponse()
         {
             Id = model.Id,
+            UpdatedAt = model.UpdatedAt,
             DiseaseId = model.DiseaseId,
             Version = model.Version,
             Severity = model.Severity,

@@ -27,6 +27,8 @@ public class TreatmentProtocolDtoResponse
 {
     [Description("Treatment ptotocol ID")]
     public Guid Id { get; set; }
+    [Description("Updated time with UTC")]
+    public DateTimeOffset UpdatedAt { get; set; }
     [Description("Disease ID")]
     public Guid DiseaseId { get; set; }
     [Description("Treatment protocol version")]
