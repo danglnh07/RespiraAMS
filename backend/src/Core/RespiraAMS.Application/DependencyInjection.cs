@@ -17,6 +17,7 @@ public static class DependencyInjection
         services.AddScoped<IPathogenService, PathogenService>();
         services.AddScoped<IResistanceRiskFactorService, ResistanceRiskFactorService>();
         services.AddScoped<ITreatmentProtocolService, TreatmentProtocolService>();
+        services.AddScoped<IDiagnoseService, DiagnoseService>();
     }
 
     public static void AddProfiles(this IServiceCollection services)

@@ -25,9 +25,9 @@ public class DiseaseDtoResponse
     [Description("Disease description")]
     public string Description { get; set; } = string.Empty;
     [Description("Required main criteria to get ICU hospitalized. Must be greater than 0")]
-    public int RequiredIcuMainCriteria { get; set; } = 0;
+    public int RequiredIcuMainCriteria { get; set; }
     [Description("Required secondary criteria to get ICU hospitalized. Must be greater than 0")]
-    public int RequiredIcuSecondaryCriteria { get; set; } = 0;
+    public int RequiredIcuSecondaryCriteria { get; set; }
     public List<IcuHospitalizedCriterionDtoResponse> IcuHospitalizedCriteria { get; set; } = [];
     public List<ResistanceRiskFactorDtoResponse> ResistanceRisks { get; set; } = [];
     public List<DiseasePathogenDtoResponse> DiseasePathogens { get; set; } = [];

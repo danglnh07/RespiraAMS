@@ -19,4 +19,14 @@ public class TreatmentProtocolRepository(AppDbContext context) : GenericReposito
         }
         return await queryable.FirstOrDefaultAsync(t => t.Id == id);
     }
+
+    public async Task<IEnumerable<TreatmentProtocol>> GetTreatmentProtocolsAsync(Func<IQueryable<TreatmentProtocol>, IQueryable<TreatmentProtocol>>? query)
+    {
+        var queryable = _context.TreatmentProtocols.AsQueryable();
+        if (query is not null)
+        {
+            queryable = query(queryable);
+        }
+        return await queryable.ToListAsync();
+    }
 }
