@@ -194,6 +194,7 @@ public class DiagnoseService(
         foreach (var factor in factorsByPathogen)
         {
             var key = factor.Key;
+            if (!scores.TryGetValue(factor.Key.Id, out _)) continue;
             var value = (double)scores[factor.Key.Id] / factor.Count();
             probabilities.Add(new InfectionProbabilityDto
             {

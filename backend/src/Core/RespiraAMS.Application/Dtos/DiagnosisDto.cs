@@ -27,9 +27,9 @@ public class ClinicalPictureDto
     public int Diastolic { get; set; }
     [Description("Age")]
     public int Age { get; set; }
-    [Description("ICU hospitalize criteria that patient has")]
+    [Description("ICU hospitalize criteria that patient has. It is the criteria ID, not the IcuHospitalizeCriteria ID")]
     public List<Guid> IcuHospitalizeCriteria { get; set; } = [];
-    [Description("Special antibiotic resistance pathogen risk factor that patient has")]
+    [Description("Special antibiotic resistance pathogen risk factor that patient has. It is the criteria ID, not the ResistanceRiskFactor ID")]
     public List<Guid> ResistanceRiskFactors { get; set; } = [];
     [Description("Other criteria that patient has")]
     public List<Guid> OtherCriteria { get; set; } = [];
