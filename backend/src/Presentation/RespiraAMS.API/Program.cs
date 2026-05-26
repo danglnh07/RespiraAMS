@@ -27,6 +27,20 @@ builder.Services.AddServices();
 builder.Services.AddProfiles();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddExceptionHandler<ExceptionHandler>();
+var origins = builder.Configuration.GetSection("CORS").Get<string[]>();
+if (origins is null || origins.Length == 0)
+{
+    origins = ["*"];
+}
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins(origins)
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -39,6 +53,7 @@ if (app.Environment.IsDevelopment())
         options.Theme = ScalarTheme.Kepler;
     });
 }
+app.UseCors("AllowSpecificOrigin");
 
 app.UseExceptionHandler(_ => { });
 
