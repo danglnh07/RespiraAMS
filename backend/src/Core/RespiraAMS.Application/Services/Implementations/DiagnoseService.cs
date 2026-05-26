@@ -37,9 +37,9 @@ public class DiagnoseService(
     {
         return score switch
         {
-            <= 1 => (Severity.Mild, TreatmentSite.Outpatient),
+            >= 0 and <= 1 => (Severity.Mild, TreatmentSite.Outpatient),
             2 => (Severity.Moderate, TreatmentSite.Inpatient),
-            <= 5 => (Severity.Severe, TreatmentSite.IntensiveCareUnit),
+            >= 3 and <= 5 => (Severity.Severe, TreatmentSite.IntensiveCareUnit),
             _ => throw new UnexpectedException($"CURB65 score get an unexpected value: {score}")
         };
     }
@@ -49,8 +49,8 @@ public class DiagnoseService(
         return score switch
         {
             0 => (Severity.Mild, TreatmentSite.Outpatient),
-            <= 2 => (Severity.Moderate, TreatmentSite.Inpatient),
-            <= 4 => (Severity.Severe, TreatmentSite.IntensiveCareUnit),
+            1 or 2 => (Severity.Moderate, TreatmentSite.Inpatient),
+            3 or 4 => (Severity.Severe, TreatmentSite.IntensiveCareUnit),
             _ => throw new UnexpectedException($"CRB65 score get an unexpected value: {score}")
         };
     }
