@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using RespiraAMS.API.Middleware;
@@ -15,7 +16,9 @@ builder.Services
     .AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(
+            namingPolicy: JsonNamingPolicy.CamelCase,
+            allowIntegerValues: false));
     });
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -25,6 +28,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddInfrastructure();
 builder.Services.AddServices();
 builder.Services.AddProfiles();
+builder.Services.AddFluentValidators();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 var origins = builder.Configuration.GetSection("CORS").Get<string[]>();
@@ -32,6 +36,7 @@ if (origins is null || origins.Length == 0)
 {
     origins = ["*"];
 }
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
@@ -48,11 +53,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference(options =>
-    {
-        options.Theme = ScalarTheme.Kepler;
-    });
+    app.MapScalarApiReference(options => { options.Theme = ScalarTheme.Kepler; });
 }
+
 app.UseCors("AllowSpecificOrigin");
 
 app.UseExceptionHandler(_ => { });

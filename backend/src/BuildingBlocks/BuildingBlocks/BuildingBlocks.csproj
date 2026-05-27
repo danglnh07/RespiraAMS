@@ -22,4 +22,8 @@
       <PackageReference Include="X.PagedList.EF" Version="10.5.9" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="JsonConverters\" />
+    </ItemGroup>
+
 </Project>

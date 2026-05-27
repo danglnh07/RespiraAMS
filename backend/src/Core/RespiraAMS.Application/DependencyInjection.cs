@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using RespiraAMS.Application.Profiles.Implementations;
 using RespiraAMS.Application.Services.Contracts;
 using RespiraAMS.Application.Services.Implementations;
+using RespiraAMS.Application.Validators;
 
 namespace RespiraAMS.Application;
 
@@ -31,5 +33,19 @@ public static class DependencyInjection
         services.AddScoped<PathogenProfile>();
         services.AddScoped<ResistanceRiskFactorProfile>();
         services.AddScoped<TreatmentProtocolProfile>();
+    }
+
+    public static void AddFluentValidators(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssembly(typeof(AntibioticSpectrumValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(AntibioticValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(CriterionValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(DiseasePathogenValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(DiseasePathogenValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(DiseaseValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(IcuHospitalizeCriterionProfile).Assembly);
+        services.AddValidatorsFromAssembly(typeof(PathogenValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(ResistanceRiskFactorProfile).Assembly);
+        services.AddValidatorsFromAssembly(typeof(TreatmentProtocolValidator).Assembly);
     }
 }
