@@ -92,11 +92,30 @@ public class DbInitializer
         };
         var spectra = new List<AntibioticSpectrum>()
         {
-            new() { Name = "Aminoglycosid", },
-            new() { Name = "β-lactam" },
-            new() { Name = "Macrolid" },
-            new() { Name = "Fluoroquinolon" },
-            new() { Name = "Others" }
+            new()
+            {
+                Name = "Aminoglycosid",
+                Description =
+                    "Thường được sử dụng để điều trị nhiễm trùng do vi khuẩn gram âm, đặc biệt là trong các trường hợp nhiễm trùng nặng"
+            },
+            new()
+            {
+                Name = "β-lactam",
+                Description = "Hiệu quả đối với nhiều loại vi khuẩn gram dương và một số vi khuẩn gram âm"
+            },
+            new()
+            {
+                Name = "Macrolid",
+                Description =
+                    "Hiệu quả với vi khuẩn gram dương và một số vi khuẩn gram âm, thường được dùng để điều trị các bệnh đường hô hấp."
+            },
+            new()
+            {
+                Name = "Fluoroquinolon",
+                Description =
+                    "Đối với nhiều loại vi khuẩn gram âm và một số gram dương, thường được chỉ định trong các trường hợp nhiễm trùng đường tiết niệu và hô hấp"
+            },
+            new() { Name = "Others", Description = "Một vài phổ kháng sinh khác" }
         };
         var antibiotics = new List<Antibiotic>()
         {
@@ -531,7 +550,7 @@ public class DbInitializer
         context.IcuHospitalizeCriteria.AddRange(icuHospitalizeCriteria);
         context.ResistanceRiskFactors.AddRange(resistanceRiskFactors);
         context.TreatmentProtocols.AddRange(protocols);
-        
+
         var succeed = await context.SaveChangesAsync();
         if (succeed <= 0)
         {
