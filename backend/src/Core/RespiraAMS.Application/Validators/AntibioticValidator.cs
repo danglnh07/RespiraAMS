@@ -17,7 +17,7 @@ public class AntibioticValidator : AbstractValidator<AntibioticDtoRequest>
         foreach (var dosage in dosages)
         {
             // Validate key
-            if (Enum.IsDefined(dosage.Key))
+            if (!Enum.IsDefined(dosage.Key))
             {
                 return false;
             }
@@ -29,7 +29,7 @@ public class AntibioticValidator : AbstractValidator<AntibioticDtoRequest>
                 return false;
             }
 
-            if (value.All(d => !string.IsNullOrWhiteSpace(d)))
+            if (value.Any(string.IsNullOrWhiteSpace))
             {
                 return false;
             }
@@ -45,31 +45,6 @@ public class AntibioticValidator : AbstractValidator<AntibioticDtoRequest>
         RuleFor(x => x.Category).IsInEnum().WithMessage("Antibiotic AWaRe category is invalid");
         RuleForEach(x => x.RouteOfAdministrations).IsInEnum().WithMessage("Route of administrations are invalid");
         RuleFor(x => x.Dosages).NotEmpty().WithMessage("Dosages is required");
-        // RuleForEach(x => x.Dosages.Keys).IsInEnum().WithMessage("Dosages are invalid");
-        // RuleForEach(x => x.Dosages.Values)
-        //     .NotEmpty()
-        //     .Must(dosage => dosage.All(x => !string.IsNullOrWhiteSpace(x)))
-        //     .WithMessage("Dosages are invalid");
-        // RuleForEach(x => x.Dosages)
-        //     .ChildRules(d =>
-        //     {
-        //         // Check if the list of is empty
-        //         d.RuleFor(x => x.Value)
-        //             .NotEmpty()
-        //             .WithMessage("At least 1 dosage is required");
-        //         // Check if all items in the list is empty string or not
-        //         d.RuleFor(x => x.Value)
-        //             .Must(values => values.All(v => !string.IsNullOrWhiteSpace(v)))
-        //             .WithMessage("Dosages are invalid");
-        //     });
-        // RuleFor(x => x.Dosages)
-        //     .NotEmpty().WithMessage("Dosages is required")
-        //     .Must(dosages => dosages.Keys.All(k => Enum.IsDefined(typeof(RouteOfAdministration), k)))
-        //     .WithMessage("Dosage route is invalid")
-        //     .Must(dosages => dosages.Values.All(v => v.Count > 0))
-        //     .WithMessage("Each route must have at least 1 dosage")
-        //     .Must(dosages => dosages.Values.All(v => v.All(d => !string.IsNullOrWhiteSpace(d))))
-        //     .WithMessage("Dosage values cannot be empty or whitespace");
         RuleFor(x => x.Dosages).Must(ValidateDosage).WithMessage("Dosages are invalid");
     }
 }
