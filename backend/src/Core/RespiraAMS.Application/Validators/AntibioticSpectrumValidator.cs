@@ -8,5 +8,6 @@ public class AntibioticSpectrumValidator : AbstractValidator<AntibioticSpectrumD
     public AntibioticSpectrumValidator()
     {
         RuleFor(x => x.Name).NotEmpty().WithMessage("Antibiotic spectrum name is required");
+        RuleFor(x => x.Description).NotEmpty().WithMessage("Antibiotic spectrum description is required");
     }
 }

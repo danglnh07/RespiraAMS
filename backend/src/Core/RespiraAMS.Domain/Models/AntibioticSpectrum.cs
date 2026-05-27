@@ -7,4 +7,5 @@ public class AntibioticSpectrum : Base
 {
     public string Name { get; set; } = string.Empty;
     public List<Antibiotic> Antibiotics { get; set; } = [];
+    public string Description { get; set; } = string.Empty;
 }
