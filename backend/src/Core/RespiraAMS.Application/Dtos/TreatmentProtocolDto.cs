@@ -7,6 +7,8 @@ namespace RespiraAMS.Application.Dtos;
 
 public class TreatmentProtocolDtoRequest
 {
+    [Description("Treatment protocol name")]
+    public string Name { get; set; } = string.Empty;
     [Description("Disease ID")]
     public Guid DiseaseId { get; set; }
     [Description("Treatment protocol version. Must be greater than 0")]
@@ -27,6 +29,8 @@ public class TreatmentProtocolDtoResponse
 {
     [Description("Treatment ptotocol ID")]
     public Guid Id { get; set; }
+    [Description("Treatment protocol name")]
+    public string Name { get; set; } = string.Empty;
     [Description("Updated time with UTC")]
     public DateTimeOffset UpdatedAt { get; set; }
     [Description("Disease ID")]

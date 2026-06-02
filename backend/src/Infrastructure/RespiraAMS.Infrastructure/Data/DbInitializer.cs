@@ -450,6 +450,8 @@ public class DbInitializer
             new()
             {
                 DiseaseId = disease.Id,
+                Name = "Phác đồ điều trị VPCĐ",
+                Version = 1,
                 Severity = Severity.Mild,
                 TreatmentSite = TreatmentSite.Outpatient,
                 SpecialInfectionId = pathogens.Where(x => x.Name.Equals("Streptococcus pneumoniae")).Select(x => x.Id)
@@ -463,6 +465,8 @@ public class DbInitializer
             },
             new()
             {
+                Name = "Phác đồ điều trị VPCĐ",
+                Version = 3,
                 DiseaseId = disease.Id,
                 Severity = Severity.Mild,
                 TreatmentSite = TreatmentSite.Outpatient,
@@ -486,6 +490,8 @@ public class DbInitializer
             },
             new()
             {
+                Name = "Phác đồ điều trị VPCĐ",
+                Version = 7,
                 DiseaseId = disease.Id,
                 Severity = Severity.Moderate,
                 TreatmentSite = TreatmentSite.Inpatient,
@@ -500,6 +506,8 @@ public class DbInitializer
             },
             new()
             {
+                Name = "Phác đồ điều trị VPCĐ",
+                Version = 2,
                 DiseaseId = disease.Id,
                 Severity = Severity.Severe,
                 TreatmentSite = TreatmentSite.IntensiveCareUnit,
@@ -514,6 +522,8 @@ public class DbInitializer
             },
             new()
             {
+                Name = "Phác đồ điều trị VPCĐ",
+                Version = 4,
                 DiseaseId = disease.Id,
                 Severity = Severity.Severe,
                 TreatmentSite = TreatmentSite.IntensiveCareUnit,
@@ -530,6 +540,8 @@ public class DbInitializer
             },
             new()
             {
+                Name = "Phác đồ điều trị VPCĐ",
+                Version = 8,
                 DiseaseId = disease.Id,
                 Severity = Severity.Severe,
                 TreatmentSite = TreatmentSite.IntensiveCareUnit,

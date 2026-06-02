@@ -17,6 +17,7 @@ public class TreatmentProtocolProfile(
     {
         return new TreatmentProtocol()
         {
+            Name = req.Name,
             DiseaseId = req.DiseaseId,
             Version = req.Version,
             Severity = req.Severity,
@@ -29,6 +30,7 @@ public class TreatmentProtocolProfile(
 
     public TreatmentProtocol MapModel(TreatmentProtocolDtoRequest req, TreatmentProtocol model)
     {
+        model.Name = req.Name;
         model.DiseaseId = req.DiseaseId;
         model.Version = req.Version;
         model.Severity = req.Severity;
@@ -45,6 +47,7 @@ public class TreatmentProtocolProfile(
         {
             Id = model.Id,
             UpdatedAt = model.UpdatedAt,
+            Name = model.Name,
             DiseaseId = model.DiseaseId,
             Version = model.Version,
             Severity = model.Severity,

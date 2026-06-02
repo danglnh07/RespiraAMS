@@ -15,6 +15,8 @@ namespace RespiraAMS.Domain.Models;
 /// </summary>
 public class TreatmentProtocol : Base
 {
+    public string Name { get; set; } = string.Empty;
+    
     public Guid DiseaseId { get; set; }
     public Disease Disease { get; set; } = null!;
     public int Version { get; set; }

@@ -8,6 +8,9 @@ public class TreatmentProtocolValidator : AbstractValidator<TreatmentProtocolDto
 {
     public TreatmentProtocolValidator()
     {
+        RuleFor(x => x.Name)
+            .NotEmpty()
+            .WithMessage("Treatment protocol name is required");
         RuleFor(x => x.DiseaseId)
             .NotEqual(Guid.Empty)
             .WithMessage("Disease ID is required");
