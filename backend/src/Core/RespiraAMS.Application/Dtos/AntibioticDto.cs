@@ -11,9 +11,9 @@ public class AntibioticDtoRequest
     public string Name { get; set; } = string.Empty;
     [Description("Antibiotic spectrum ID")]
     public Guid AntibioticSpectrumId { get; set; }
-    [Description("Antibiotic category (AWaRe metrics). The value can either be number or string (case insensitive) value")]
+    [Description("Antibiotic category (AWaRe metrics). The value must be a string (case insensitive) value")]
     public AwareCategory Category { get; set; }
-    [Description("Route of Administration. The value can either be number or string (case insensitive) value)")]
+    [Description("Route of Administration. The value must string (case insensitive) value)")]
     public List<RouteOfAdministration> RouteOfAdministrations { get; set; } = [];
     [Description("Medicine dosages, in the form of \"RouteOfAdministration\": \"List<string>\"")]
     public Dictionary<RouteOfAdministration, List<string>> Dosages { get; set; } = [];

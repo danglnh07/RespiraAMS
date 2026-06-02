@@ -13,9 +13,9 @@ public class TreatmentProtocolDtoRequest
     public Guid DiseaseId { get; set; }
     [Description("Treatment protocol version. Must be greater than 0")]
     public int Version { get; set; }
-    [Description("Severity. Can be either number or case insensitive string")]
+    [Description("Severity. The value must be a string (case insensitive) value")]
     public Severity Severity { get; set; }
-    [Description("Treatment site. Can be either number or case insensitive string")]
+    [Description("Treatment site. The value must be a string (case insensitive) value")]
     public TreatmentSite TreatmentSite { get; set; }
     [Description("Special infection ID, which is the Pathogen ID")]
     public Guid? SpecialInfectionId { get; set; }
@@ -42,7 +42,7 @@ public class TreatmentProtocolDtoResponse
     [Description("Treatment site")]
     public TreatmentSite TreatmentSite { get; set; }
     [Description("Special infection pathogen")]
-    public PathogenDtoResponse? SpecialInfection { get; set; } = null!;
+    public PathogenDtoResponse? SpecialInfection { get; set; }
     [Description("Other secondary criteria")]
     public List<CriterionDtoResponse> OtherCriteria { get; set; } = [];
     [Description("Treatment protocol medicines")]

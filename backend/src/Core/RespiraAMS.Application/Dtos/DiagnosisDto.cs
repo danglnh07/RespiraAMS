@@ -8,8 +8,11 @@ namespace RespiraAMS.Application.Dtos;
 /*=== Diagnosis template DTO ===*/
 public class DiagnosisTemplateDto
 {
+    [Description("ICU hospitalize criteria belong to that disease")]
     public List<CriterionDtoResponse> IcuHospitalizeCriteria { get; set; } = [];
+    [Description("Resistance risk factors belong to that disease")]
     public List<CriterionDtoResponse> ResistanceRiskFactors { get; set; } = [];
+    [Description("Other sub criteria that disease can have")]
     public List<CriterionDtoResponse> OtherCriteria { get; set; } = [];
 } 
 
@@ -37,7 +40,9 @@ public class ClinicalPictureDto
 
 public class InfectionProbabilityDto
 {
+    [Description("Pathogen")]
     public PathogenDtoResponse Pathogen { get; set; } = null!;
+    [Description("Probability of having infection. Its value is in range [0, 1]")]
     public double Probability { get; set; }
 }
 
@@ -47,7 +52,7 @@ public class DiagnosisResultDto
     public Severity Severity { get; set; }
     [Description("Patient treatment site")]
     public TreatmentSite TreatmentSite { get; set; }
-    [Description("Probability of having special infection with pathogen that can resist antibiotic")]
+    [Description("Probabilities of having special infection with pathogen that can resist antibiotic")]
     public List<InfectionProbabilityDto> InfectionProbabilities { get; set; } = [];
 }
 
@@ -57,7 +62,7 @@ public class RecommendDtoRequest
     public Severity Severity { get; set; }
     [Description("Patient treatment site")]
     public TreatmentSite TreatmentSite { get; set; }
-    [Description("Probability of having special infection with pathogen that can resist antibiotic")]
+    [Description("Probabilities of having special infection. The key is the pathogen ID and value is it probability")]
     public Dictionary<Guid, double> InfectionProbabilities { get; set; } = [];
     [Description("Other criteria IDs that patient had")]
     public List<Guid> OtherCriteria { get; set; } = [];

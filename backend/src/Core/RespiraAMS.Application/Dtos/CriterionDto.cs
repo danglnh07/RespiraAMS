@@ -8,7 +8,7 @@ public class CriterionDtoRequest
 {
     [Description("Criterion name")]
     public string Name { get; set; } = string.Empty;
-    [Description("Criterion type. Can be either number or case insensitive string")]
+    [Description("Criterion type. The value must be a string (case insensitive) value")]
     public CriterionType Type { get; set; }
     [Description("Criterion min value if this is numeric. No numeric constraints on min")]
     public double? Min { get; set; }
@@ -26,7 +26,7 @@ public class CriterionDtoResponse
     public Guid Id { get; set; }
     [Description("Criterion name")]
     public string Name { get; set; } = string.Empty;
-    [Description("Criterion type. Can be either number or case insensitive string")]
+    [Description("Criterion type")]
     public CriterionType Type { get; set; }
     [Description("Criterion min value if this is numeric. No numeric constraints on min")]
     public double? Min { get; set; }

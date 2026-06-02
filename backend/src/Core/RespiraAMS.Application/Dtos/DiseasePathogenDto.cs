@@ -10,9 +10,9 @@ public class DiseasePathogenDtoRequest
     public Guid DiseaseId {get; set;}
     [Description("Pathogen ID")]
     public Guid PathogenId { get; set; }
-    [Description("Disease severity. Can either be number or case insensitive string")]
+    [Description("Disease severity. The value must be a string (case insensitive) value")]
     public Severity Severity {get; set;}
-    [Description("Treatment site. Can either be number or case insensitive string")]
+    [Description("Treatment site. The value must be a string (case insensitive) value")]
     public TreatmentSite TreatmentSite {get; set;}
 }
 
