@@ -162,7 +162,7 @@ public class DiagnoseService(
 
         // Prioritize AST metric over CURB65 for treatment site
         logger.LogInformation("AST metrics: {main} - {secondary}", mainScore, secondaryScore);
-        if (disease.RequiredIcuMainCriteria >= mainScore || disease.RequiredIcuSecondaryCriteria >= secondaryScore)
+        if (mainScore >= disease.RequiredIcuMainCriteria || secondaryScore >= disease.RequiredIcuSecondaryCriteria)
         {
             treatmentSite = TreatmentSite.IntensiveCareUnit;
         }

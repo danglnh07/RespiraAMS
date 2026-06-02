@@ -12,5 +12,4 @@
   <Folder Name="/Presentation/">
     <Project Path="src/Presentation/RespiraAMS.API/RespiraAMS.API.csproj" />
   </Folder>
-  <Project Path="test/RespiraAMS.Application.Test/RespiraAMS.Application.Test.csproj" />
 </Solution>
