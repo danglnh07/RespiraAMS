@@ -133,6 +133,25 @@ public class DiagnoseService(
             throw new BadRequestException("Disease not found");
         }
 
+        // Validation: check if all criteria IDs exists
+        if (!clinicalPicture.IcuHospitalizeCriteria.All(x => disease.IcuHospitalizeCriteria.Select(icu => icu.CriterionId).Contains(x)))
+        {
+            logger.LogWarning("Not all ICU criteria IDs exists for this disease");
+            throw new BadRequestException("Not all ICU criteria IDs exists for this disease");
+        }
+
+        if (!clinicalPicture.ResistanceRiskFactors.All(x => disease.ResistanceRisks.Select(risk => risk.CriterionId).Contains(x)))
+        {
+            logger.LogWarning("Not all resistance risk factor IDs exists for this disease");
+            throw new BadRequestException("Not all resistance risk factor IDs exists for this disease");
+        }
+
+        if (!await uow.Repo<Criterion>().AllIdsExistAsync(clinicalPicture.OtherCriteria))
+        {
+            logger.LogWarning("Not all other criteria IDs exists");
+            throw new BadRequestException("Not all other criteria IDs exists");
+        }
+        
         // Assess severity and treatment site using CURB65 score
         var curbScore = CurbScore(clinicalPicture.Confusion, clinicalPicture.Urea, clinicalPicture.Respiratory,
             clinicalPicture.Systolic, clinicalPicture.Diastolic, clinicalPicture.Age);
@@ -213,6 +232,19 @@ public class DiagnoseService(
 
     public async Task<IEnumerable<TreatmentProtocolDtoResponse>> Recommend(Guid diseaseId, RecommendDtoRequest req)
     {
+        // Validation: check if pathogen IDs in probabilities and other criteria exists
+        if (!await uow.Repo<Pathogen>().AllIdsExistAsync(req.InfectionProbabilities.Keys.AsEnumerable().ToList()))
+        {
+            logger.LogWarning("Invalid probabilities for recommend request: not all pathogen IDs exists");
+            throw new BadRequestException("Invalid probabilities for recommend request: not all pathogen IDs exists");
+        }
+
+        if (!await uow.Repo<Criterion>().AllIdsExistAsync(req.OtherCriteria))
+        {
+            logger.LogWarning("Not all other criteria IDs exists");
+            throw new BadRequestException("Not all other criteria IDs exists");
+        }
+        
         var sw = Stopwatch.StartNew();
 
         // Query the treatment protocols
