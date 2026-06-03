@@ -1,13 +1,13 @@
 ﻿using BuildingBlocks.Dtos;
 
-namespace RespiraAMS.Application.Features.AntibioticSpectra.GetPagedAntibioticSpectrum;
+namespace RespiraAMS.Application.Features.Pathogens.GetPagedPathogen;
 
-public class GetPagedAntibioticSpectrumQuery
+public class GetPagedPathogenQuery
 {
     public PaginationParam Param { get; set; } = null!;
 }
 
-public class GetPagedAntibioticSpectrumItem
+public class GetPagedPathogenItem
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;

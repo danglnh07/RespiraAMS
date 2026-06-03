@@ -31,6 +31,7 @@ public class GetPagedAntibioticHandler(IDbContext context, AntibioticMapper mapp
             .Select(x => new GetPagedAntibioticItem()
             {
                 Id = x.Id,
+                Name = x.Name,
                 AntibioticSpectrum = new AntibioticSpectrumItem()
                 {
                     Id = x.AntibioticSpectrum.Id,

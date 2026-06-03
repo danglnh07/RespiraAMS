@@ -32,6 +32,7 @@ public class AntibioticsController(IMessageBus bus) : ControllerBase
     public async Task<ApiResponse<UpdateAntibioticResult>> UpdateAntibiotic(Guid id,
         [FromBody] UpdateAntibioticCommand request)
     {
+        request.Id = id;
         var result = await bus.InvokeAsync<UpdateAntibioticResult>(request);
         return ApiResponse<UpdateAntibioticResult>.Ok(result);
     }

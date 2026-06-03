@@ -81,4 +81,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Seed data
+await app.SeedData();
+
 app.Run();

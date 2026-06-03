@@ -25,6 +25,7 @@ public class AntibioticSpectrumItem
 public class GetPagedAntibioticItem
 {
     public Guid Id { get; set; }
+    public string Name { get; set; } = string.Empty;
     public AntibioticSpectrumItem AntibioticSpectrum { get; set; } = null!;
     public AwareCategory Category { get; set; }
     public List<RouteOfAdministration> RouteOfAdministrations { get; set; } = [];

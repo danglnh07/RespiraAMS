@@ -15,21 +15,21 @@ public class DeleteAntibioticSpectrumHandler(IDbContext context, ILogger<DeleteA
         {
             throw new BadRequestException("Antibiotic spectrum not found");
         }
-        
+
         // Start delete with cascade transaction
-        await context.ExecuteInTransactionAsync(() =>
+        await context.ExecuteInTransactionAsync(async () =>
         {
             // Delete spectrum
             spectrum.IsDeleted = true;
             spectrum.UpdatedAt = DateTimeOffset.UtcNow;
-            
+
             // Cascade delete antibiotic
-            logger.LogInformation("Start cascade delete antibiotic: {count}", spectrum.Antibiotics.Count);
-            foreach (var antibiotic in spectrum.Antibiotics)
-            {
-                antibiotic.IsDeleted = false;
-                antibiotic.UpdatedAt = DateTimeOffset.Now;
-            }
+            var count = await context.Antibiotics
+                .Where(x => x.AntibioticSpectrumId == command.Id)
+                .ExecuteUpdateAsync(x => x
+                    .SetProperty(a => a.IsDeleted, true)
+                    .SetProperty(a => a.UpdatedAt, DateTimeOffset.UtcNow));
+            logger.LogInformation("Cascade delete antibiotic spectrum: deleted {count} antibiotic", count);
         });
     }
 }
