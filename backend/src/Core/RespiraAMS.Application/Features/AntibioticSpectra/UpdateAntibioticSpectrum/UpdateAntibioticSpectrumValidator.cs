@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RespiraAMS.Application.Shared;
 
 namespace RespiraAMS.Application.Features.AntibioticSpectra.UpdateAntibioticSpectrum;
 
@@ -6,14 +7,8 @@ public class UpdateAntibioticSpectrumValidator : AbstractValidator<UpdateAntibio
 {
     public UpdateAntibioticSpectrumValidator()
     {
-        RuleFor(x => x.Id)
-            .NotEqual(Guid.Empty)
-            .WithMessage("Antibiotic spectrum ID is required");
-        RuleFor(x => x.Name)
-            .NotEmpty()
-            .WithMessage("Antibiotic spectrum name is required");
-        RuleFor(x => x.Description)
-            .NotEmpty()
-            .WithMessage("Antibiotic spectrum description is required");
+        RuleFor(x => x.Id).IsValidGuid("Antibiotic spectrum ID");
+        RuleFor(x => x.Name).NotEmptyString("Antibiotic spectrum name");
+        RuleFor(x => x.Description).NotEmptyString("Antibiotic spectrum description");
     }
 }

@@ -17,7 +17,7 @@ public class AntibioticSpectraController(IMessageBus bus) : ControllerBase
         [FromBody] CreateAntibioticSpectrumCommand request)
     {
         var result = await bus.InvokeAsync<CreateAntibioticSpectrumResult>(request);
-        return ApiResponse<CreateAntibioticSpectrumResult>.Ok(result, statusCode: 201);
+        return ApiResponse<CreateAntibioticSpectrumResult>.Ok(result, statusCode: StatusCodes.Status201Created);
     }
 
     [HttpGet]
@@ -42,7 +42,7 @@ public class AntibioticSpectraController(IMessageBus bus) : ControllerBase
     [Route("/api/antibiotic-spectra/{id:guid}")]
     public async Task<ApiResponse> DeleteAntibioticSpectrum(Guid id)
     {
-        await bus.InvokeAsync(new DeleteAntibioticSpectrumCommand() { Id = id });
-        return ApiResponse.Ok(statusCode: 204);
+        await bus.InvokeAsync(new DeleteAntibioticSpectrumCommand(id));
+        return ApiResponse.Ok(statusCode: StatusCodes.Status204NoContent);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace RespiraAMS.Application.Features.AntibioticSpectra.DeleteAntibioticSpectrum;
 
-public class DeleteAntibioticSpectrumCommand
+public class DeleteAntibioticSpectrumCommand(Guid id)
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = id;
 }

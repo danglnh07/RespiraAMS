@@ -10,7 +10,7 @@ public class DeleteAntibioticSpectrumHandler(IDbContext context, ILogger<DeleteA
     public async Task HandleAsync(DeleteAntibioticSpectrumCommand command)
     {
         // Get entity from database
-        var spectrum = await context.AntibioticSpectra.FirstOrDefaultAsync(x => x.Id == command.Id);
+        var spectrum = await context.AntibioticSpectra.FindAsync(command.Id);
         if (spectrum is null)
         {
             throw new BadRequestException("Antibiotic spectrum not found");

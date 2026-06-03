@@ -19,7 +19,7 @@ public class GetPagedAntibioticSpectrumHandler(IDbContext context, AntibioticSpe
                 Name = x.Name,
                 Description = x.Description,
             })
-            .ToPagedListAsync(query.Page, query.Size);
+            .ToPagedListAsync(query.Param.Page, query.Param.Size);
         return mapper.ToPagination(spectra);
     }
 }

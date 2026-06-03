@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RespiraAMS.Application.Shared;
 
 namespace RespiraAMS.Application.Features.AntibioticSpectra.GetPagedAntibioticSpectrum;
 
@@ -6,11 +7,6 @@ public class GetPagedAntibioticSpectrumValidator : AbstractValidator<GetPagedAnt
 {
     public GetPagedAntibioticSpectrumValidator()
     {
-        RuleFor(x => x.Page)
-            .GreaterThan(0)
-            .WithMessage("Page must be greater than zero");
-        RuleFor(x => x.Size)
-            .GreaterThan(0)
-            .WithMessage("Size must be greater than zero");
+        RuleFor(query => query.Param).IsValidPaginationParam();
     }
 }

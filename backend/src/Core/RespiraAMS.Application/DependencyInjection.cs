@@ -1,5 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using RespiraAMS.Application.Features.Antibiotics.CreateAntibiotic;
+using RespiraAMS.Application.Features.Antibiotics.DeleteAntibiotic;
+using RespiraAMS.Application.Features.Antibiotics.GetPagedAntibiotic;
+using RespiraAMS.Application.Features.Antibiotics.UpdateAntibiotic;
 using RespiraAMS.Application.Features.AntibioticSpectra.CreateAntibioticSpectrum;
 using RespiraAMS.Application.Features.AntibioticSpectra.DeleteAntibioticSpectrum;
 using RespiraAMS.Application.Features.AntibioticSpectra.GetPagedAntibioticSpectrum;
@@ -21,5 +25,10 @@ public static class DependencyInjection
         services.AddValidatorsFromAssembly(typeof(UpdateAntibioticSpectrumValidator).Assembly);
         services.AddValidatorsFromAssembly(typeof(GetPagedAntibioticSpectrumValidator).Assembly);
         services.AddValidatorsFromAssembly(typeof(DeleteAntibioticSpectrumValidator).Assembly);
+        
+        services.AddValidatorsFromAssembly(typeof(CreateAntibioticValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(UpdateAntibioticValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(GetPagedAntibioticValidator).Assembly);
+        services.AddValidatorsFromAssembly(typeof(DeleteAntibioticValidator).Assembly);
     }
 }

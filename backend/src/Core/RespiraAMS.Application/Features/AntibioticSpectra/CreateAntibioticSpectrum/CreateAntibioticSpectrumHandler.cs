@@ -17,10 +17,12 @@ public class CreateAntibioticSpectrumHandler(
 
         // Save to database
         await context.AntibioticSpectra.AddAsync(spectrum);
-        if (await context.SaveChangesAsync() > 0) return new CreateAntibioticSpectrumResult(spectrum.Id);
-        
-        // Log and throw error if failed to save changes
-        logger.LogWarning("Failed to create antibiotic spectrum");
-        throw new InternalServerErrorException();
+        if (await context.SaveChangesAsync() <= 0)
+        {
+            logger.LogWarning("Failed to create antibiotic spectrum");
+            throw new InternalServerErrorException();
+        }
+
+        return new CreateAntibioticSpectrumResult(spectrum.Id);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Dtos;
+using RespiraAMS.Application.Abstracts.Mappers;
 using RespiraAMS.Application.Features.AntibioticSpectra.CreateAntibioticSpectrum;
 using RespiraAMS.Application.Features.AntibioticSpectra.GetPagedAntibioticSpectrum;
 using RespiraAMS.Application.Features.AntibioticSpectra.UpdateAntibioticSpectrum;
@@ -7,7 +8,10 @@ using X.PagedList;
 
 namespace RespiraAMS.Application.Mappers;
 
-public class AntibioticSpectrumMapper : MapperBase
+public class AntibioticSpectrumMapper : MapperBase,
+    ICreateMapper<AntibioticSpectrum, CreateAntibioticSpectrumCommand>,
+    IUpdateMapper<AntibioticSpectrum, UpdateAntibioticSpectrumCommand, UpdateAntibioticSpectrumResult>,
+    IPagedMapper<GetPagedAntibioticSpectrumItem>
 {
     public AntibioticSpectrum ToModel(CreateAntibioticSpectrumCommand command)
     {

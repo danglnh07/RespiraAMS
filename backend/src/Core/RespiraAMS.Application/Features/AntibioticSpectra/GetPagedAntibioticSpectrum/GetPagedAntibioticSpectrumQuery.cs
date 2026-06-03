@@ -1,9 +1,10 @@
-﻿namespace RespiraAMS.Application.Features.AntibioticSpectra.GetPagedAntibioticSpectrum;
+﻿using BuildingBlocks.Dtos;
 
-public class GetPagedAntibioticSpectrumQuery
+namespace RespiraAMS.Application.Features.AntibioticSpectra.GetPagedAntibioticSpectrum;
+
+public class GetPagedAntibioticSpectrumQuery(PaginationParam param)
 {
-    public int Page { get; set; }
-    public int Size { get; set; }
+    public PaginationParam Param { get; set; } = param;
 }
 
 public class GetPagedAntibioticSpectrumItem

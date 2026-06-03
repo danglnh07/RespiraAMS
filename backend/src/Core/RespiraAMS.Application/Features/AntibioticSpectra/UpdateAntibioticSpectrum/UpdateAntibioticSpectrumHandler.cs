@@ -14,7 +14,7 @@ public class UpdateAntibioticSpectrumHandler(
     public async Task<UpdateAntibioticSpectrumResult> HandleAsync(UpdateAntibioticSpectrumCommand command)
     {
         // Get entity from database
-        var spectrum = await context.AntibioticSpectra.FirstOrDefaultAsync(x => x.Id == command.Id);
+        var spectrum = await context.AntibioticSpectra.FindAsync(command.Id);
         if (spectrum is null)
         {
             throw new BadRequestException("Antibiotic spectrum not found");
@@ -24,10 +24,12 @@ public class UpdateAntibioticSpectrumHandler(
         spectrum = mapper.ToModel(spectrum, command);
 
         // Save changes
-        if (await context.SaveChangesAsync() > 0) return mapper.ToResult(spectrum); 
+        if (await context.SaveChangesAsync() <= 0)
+        {
+            logger.LogWarning("Failed to update antibiotic spectrum");
+            throw new InternalServerErrorException();
+        }
 
-        // Log and throw error if failed to save changes
-        logger.LogWarning("Failed to update antibiotic spectrum");
-        throw new InternalServerErrorException();
+        return mapper.ToResult(spectrum);
     }
 }
