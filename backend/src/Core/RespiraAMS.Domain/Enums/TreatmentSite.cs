@@ -1,11 +1,11 @@
 ﻿namespace RespiraAMS.Domain.Enums;
 
 /// <summary>
-/// Nơi (cấp độ) điều trị
+/// Where to receive treatment. It can also be used to deduce the severity of the patient
 /// </summary>
 public enum TreatmentSite
 {
-    Outpatient, // Ngoại trú
-    Inpatient, // Nội trú
-    IntensiveCareUnit, // Nhập ICU
+    Outpatient,
+    Inpatient, 
+    IntensiveCareUnit, 
 }

@@ -1,64 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RespiraAMS.Application.Dtos;
-using RespiraAMS.Application.Services.Contracts;
+﻿using BuildingBlocks.Dtos;
+using Microsoft.AspNetCore.Mvc;
+using RespiraAMS.Application.Features.AntibioticSpectra.CreateAntibioticSpectrum;
+using RespiraAMS.Application.Features.AntibioticSpectra.DeleteAntibioticSpectrum;
+using RespiraAMS.Application.Features.AntibioticSpectra.GetPagedAntibioticSpectrum;
+using RespiraAMS.Application.Features.AntibioticSpectra.UpdateAntibioticSpectrum;
+using Wolverine;
 
 namespace RespiraAMS.API.Controllers;
 
 [ApiController]
 [Route("api/antibiotic-spectra")]
-public class AntibioticSpectraController(IAntibioticSpectrumService service) : ControllerBase
+public class AntibioticSpectraController(IMessageBus bus) : ControllerBase
 {
     [HttpPost]
-    [ProducesResponseType<Guid>(StatusCodes.Status201Created)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> CreateAntiBioticSpectrum([FromBody] AntibioticSpectrumDtoRequest req)
+    public async Task<ApiResponse<CreateAntibioticSpectrumResult>> CreateAntibioticSpectrum(
+        [FromBody] CreateAntibioticSpectrumCommand request)
     {
-        var id = await service.CreateAsync(req);
-        return CreatedAtAction(nameof(GetAntibioticSpectrum), new { id }, id);
+        var result = await bus.InvokeAsync<CreateAntibioticSpectrumResult>(request);
+        return ApiResponse<CreateAntibioticSpectrumResult>.Ok(result, statusCode: 201);
     }
 
     [HttpGet]
-    [Route("{id:guid}")]
-    [ProducesResponseType<AntibioticDtoResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetAntibioticSpectrum(Guid id)
+    public async Task<ApiResponse<Pagination<GetPagedAntibioticSpectrumItem>>> GetAntibioticSpectrum(
+        [FromQuery] GetPagedAntibioticSpectrumQuery query)
     {
-        var resp = await service.GetByIdAsync(id);
-        return Ok(resp);
-    }
-
-    [HttpGet]
-    [ProducesResponseType<Pagination<AntibioticSpectrumDtoResponse>>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetAntibioticSpectra([FromQuery] PaginationParam param)
-    {
-        var (metadata, spectra) = await service.GetListAsync(param.Page, param.Size);
-        return Ok(new Pagination<AntibioticSpectrumDtoResponse>(metadata, spectra));
+        var result = await bus.InvokeAsync<Pagination<GetPagedAntibioticSpectrumItem>>(query);
+        return ApiResponse<Pagination<GetPagedAntibioticSpectrumItem>>.Ok(result);
     }
 
     [HttpPut]
-    [Route("{id:guid}")]
-    [ProducesResponseType<AntibioticSpectrumDtoResponse>(StatusCodes.Status200OK)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> UpdateAntibioticSpectrum(Guid id, [FromBody] AntibioticSpectrumDtoRequest req)
+    [Route("/api/antibiotic-spectra/{id:guid}")]
+    public async Task<ApiResponse<UpdateAntibioticSpectrumResult>> UpdateAntibioticSpectrum(
+        Guid id, [FromBody] UpdateAntibioticSpectrumCommand request)
     {
-        var resp = await service.UpdateAsync(id, req);
-        return Ok(resp);
+        request.Id = id;
+        var result = await bus.InvokeAsync<UpdateAntibioticSpectrumResult>(request);
+        return ApiResponse<UpdateAntibioticSpectrumResult>.Ok(result);
     }
 
     [HttpDelete]
-    [Route("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
-    [ProducesResponseType<ProblemDetails>(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> DeleteAntibioticSpectrum(Guid id)
+    [Route("/api/antibiotic-spectra/{id:guid}")]
+    public async Task<ApiResponse> DeleteAntibioticSpectrum(Guid id)
     {
-        await service.DeleteAsync(id);
-        return NoContent();
+        await bus.InvokeAsync(new DeleteAntibioticSpectrumCommand() { Id = id });
+        return ApiResponse.Ok(statusCode: 204);
     }
 }

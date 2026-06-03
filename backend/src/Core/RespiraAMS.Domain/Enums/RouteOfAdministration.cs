@@ -1,14 +1,11 @@
 ﻿namespace RespiraAMS.Domain.Enums;
 
 /*
- * Vì đường dùng thuốc gần như là cố định -> enum sẽ hợp lý hơn là 1 bảng riêng
+ * Since routes of administration are mostly fixed, enum would be better than an entity model
  */
 
-/// <summary>
-/// Đường dùng thuốc
-/// </summary>
 public enum RouteOfAdministration
 {
-    Oral, // Đường uống
-    Intravenous, // Đường tiêm tĩnh mạch
+    Oral,
+    Intravenous,
 }

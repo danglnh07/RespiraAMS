@@ -1,4 +1,5 @@
-﻿using RespiraAMS.Domain.Enums;
+﻿using BuildingBlocks.Models;
+using RespiraAMS.Domain.Enums;
 
 namespace RespiraAMS.Domain.Models;
 

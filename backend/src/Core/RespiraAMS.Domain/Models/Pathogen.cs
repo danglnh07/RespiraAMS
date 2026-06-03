@@ -1,7 +1,9 @@
-﻿namespace RespiraAMS.Domain.Models;
+﻿using BuildingBlocks.Models;
+
+namespace RespiraAMS.Domain.Models;
 
 /// <summary>
-/// Tác nhân gây bệnh (chung). Có thể là vi khuẩn, virus, nấm,...
+/// Pathogen (which can either be virus, bacterium,...). This pathogen won't associate with any disease
 /// </summary>
 public class Pathogen : Base
 {

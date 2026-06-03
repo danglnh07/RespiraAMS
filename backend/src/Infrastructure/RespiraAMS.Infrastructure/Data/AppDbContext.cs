@@ -1,11 +1,15 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using RespiraAMS.Application.Abstracts.Data;
 using RespiraAMS.Domain.Models;
 using RespiraAMS.Infrastructure.Utils.Databases;
 
 namespace RespiraAMS.Infrastructure.Data;
 
-public class AppDbContext(DbContextOptions<AppDbContext> context) : DbContext(context)
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options), IDbContext
 {
+    private IExecutionStrategy GetExecutionStrategy() => base.Database.CreateExecutionStrategy();
+
     public DbSet<Pathogen> Pathogens { get; set; }
     public DbSet<AntibioticSpectrum> AntibioticSpectra { get; set; }
     public DbSet<Antibiotic> Antibiotics { get; set; }
@@ -15,6 +19,67 @@ public class AppDbContext(DbContextOptions<AppDbContext> context) : DbContext(co
     public DbSet<Disease> Diseases { get; set; }
     public DbSet<DiseasePathogen> DiseasePathogens { get; set; }
     public DbSet<TreatmentProtocol> TreatmentProtocols { get; set; }
+
+    public async Task<int> SaveChangesAsync()
+    {
+        return await base.SaveChangesAsync();
+    }
+
+    public async Task ExecuteInTransactionAsync(Func<Task> action, CancellationToken cancellationToken = default)
+    {
+        var strategy = GetExecutionStrategy();
+        await strategy.ExecuteAsync(
+            action,
+            async (ctx, op, token) =>
+            {
+                await using var transaction = await ctx.Database
+                    .BeginTransactionAsync(token);
+
+                try
+                {
+                    await op();
+                    await ctx.SaveChangesAsync(token);
+                    await transaction.CommitAsync(token);
+                }
+                catch
+                {
+                    await transaction.RollbackAsync(token);
+                    throw;
+                }
+
+                return true;
+            },
+            null,
+            cancellationToken);
+    }
+
+    public async Task ExecuteInTransactionAsync(Action action, CancellationToken cancellationToken = default)
+    {
+        var strategy = GetExecutionStrategy();
+        await strategy.ExecuteAsync(
+            action,
+            async (ctx, op, token) =>
+            {
+                await using var transaction = await ctx.Database
+                    .BeginTransactionAsync(token);
+
+                try
+                {
+                    op();
+                    await ctx.SaveChangesAsync(token);
+                    await transaction.CommitAsync(token);
+                }
+                catch
+                {
+                    await transaction.RollbackAsync(token);
+                    throw;
+                }
+
+                return true;
+            },
+            null,
+            cancellationToken);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

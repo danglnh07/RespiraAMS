@@ -1,9 +1,9 @@
-﻿namespace RespiraAMS.Domain.Models;
+﻿using BuildingBlocks.Models;
+
+namespace RespiraAMS.Domain.Models;
 
 /// <summary>
-/// Bệnh. Sẽ bao gồm hết các thông tin liên quan đến bệnh như các tiêu chí tính toán
-/// mức độ hay các tình trạng đặc biệt, tác nhân gây bệnh,... Phác đồ điều trị sẽ không
-/// nằm trong này
+/// Disease class. Treatment protocols won't be include in Disease because of how complex and nested it is
 /// </summary>
 public class Disease : Base
 {

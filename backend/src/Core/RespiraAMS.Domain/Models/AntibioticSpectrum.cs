@@ -1,4 +1,6 @@
-﻿namespace RespiraAMS.Domain.Models;
+﻿using BuildingBlocks.Models;
+
+namespace RespiraAMS.Domain.Models;
 
 /// <summary>
 /// Antibiotic spectrum

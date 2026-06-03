@@ -1,9 +1,10 @@
-﻿using RespiraAMS.Domain.Enums;
+﻿using BuildingBlocks.Models;
+using RespiraAMS.Domain.Enums;
 
 namespace RespiraAMS.Domain.Models;
 
 /// <summary>
-/// Tiêu chí đánh giá, một class abstract sẽ được dùng để biểu hiện tiêu chí đánh giá
+/// Criterion used to evaluate condition, severity,...
 /// </summary>
 public abstract class Criterion : Base
 {
@@ -12,7 +13,7 @@ public abstract class Criterion : Base
 }
 
 /// <summary>
-/// Tiêu chí đánh giá dạng True/False. Ở đây, mặc định True sẽ là thõa mãn tiêu chí
+/// This criterion is a True/False type
 /// </summary>
 public class BooleanCriterion : Criterion
 {
@@ -20,9 +21,7 @@ public class BooleanCriterion : Criterion
 }
 
 /// <summary>
-/// Tiêu chí đánh giá dạng chỉ số (metrics). Class này hỗ trợ thiết lập linh hoạt các điều kiện chặn:
-/// (min, max): không tính biên.
-/// [min, max]: tính biên.
+/// Metric-type criterion.
 /// </summary>
 public class NumericCriterion : Criterion
 {

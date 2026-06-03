@@ -1,37 +1,37 @@
-﻿using RespiraAMS.Domain.Enums;
+﻿using BuildingBlocks.Models;
+using RespiraAMS.Domain.Enums;
 
 namespace RespiraAMS.Domain.Models;
 
-/*
- * Phác đồ điêu trị có thể được phân loại dựa trên các yếu tố sau:
- * 1. Mức độ (Severity) và nơi (cấp độ) điều trị (TreatmentSite)
- * 2. Tỉ lệ nhiễm khuẩn đặc biệt
- * 3. Các tiêu chí phụ khác
- * Trong đó, 1. là bắt buộc, 2. và 3. là tùy chọn
- */
-
 /// <summary>
-/// Phác đồ điều trị.
+/// Treatment protocol
 /// </summary>
 public class TreatmentProtocol : Base
 {
+    // Treatment protocol name
     public string Name { get; set; } = string.Empty;
+    // Issuer (WHO, VietNam Ministry of Health,...)
+    public string Issuer {get; set; } = string.Empty;
+    // Date issuing
+    public DateTimeOffset IssueDate { get; set; } = DateTimeOffset.UtcNow;
+    // Treatment protocol version
+    public int Version { get; set; }
     
+    // Treatment protocol general information
     public Guid DiseaseId { get; set; }
     public Disease Disease { get; set; } = null!;
-    public int Version { get; set; }
     public Severity Severity { get; set; }
     public TreatmentSite TreatmentSite { get; set; }
 
-    // Nhiễm khuẩn đặc biệt
+    // Risk of having special infection
     public Guid? SpecialInfectionId { get; set; }
     public Pathogen? SpecialInfection { get; set; }
 
-    // Các tiêu chí phụ khác
+    // Other sub-criteria
     public List<Guid> OtherCriteriaIds { get; set; } = [];
     public List<Criterion> OtherCriteria { get; set; } = [];
 
-    // Thuốc
+    // Medicines
     public List<Guid> MedicineIds { get; set; } = [];
     public List<Antibiotic> Medicines { get; set; } = [];
 }

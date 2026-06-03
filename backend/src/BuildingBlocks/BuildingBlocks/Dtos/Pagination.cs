@@ -1,0 +1,17 @@
+﻿namespace BuildingBlocks.Dtos;
+
+public class PaginationMetadata
+{
+    public bool HasNextPage { get; set; }
+    public bool HasPreviousPage { get; set; }
+    public int TotalItemCount { get; set; }
+    public int PageCount { get; set; }
+    public int CurrentPage { get; set; }
+    public int PageSize { get; set; }
+}
+
+public class Pagination<T>(PaginationMetadata metadata, IEnumerable<T> items)
+{
+    public PaginationMetadata Metadata { get; set; } = metadata;
+    public IEnumerable<T> Items { get; set; } = items;
+}

@@ -1,11 +1,13 @@
-﻿namespace RespiraAMS.Domain.Models;
+﻿using BuildingBlocks.Models;
+
+namespace RespiraAMS.Domain.Models;
 
 /*
  * Trường hợp của class này cũng tương tự IcuHospitalizeCriterion
  */
 
 /// <summary>
-/// Nguy cơ nhiễm khuẩn đặc biệt có khả năng kháng thuốc
+/// Factor to determine the risk of having infected with special pathogen that have resistance to antibiotic
 /// </summary>
 public class ResistanceRiskFactor : Base
 {

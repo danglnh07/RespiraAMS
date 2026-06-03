@@ -1,9 +1,10 @@
-﻿using RespiraAMS.Domain.Enums;
+﻿using BuildingBlocks.Models;
+using RespiraAMS.Domain.Enums;
 
 namespace RespiraAMS.Domain.Models;
 
 /// <summary>
-/// Disease causes
+/// Cause to a disease, which was categorized by severity and treatment site
 /// </summary>
 public class DiseasePathogen : Base
 {

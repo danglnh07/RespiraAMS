@@ -1,15 +1,9 @@
-﻿namespace RespiraAMS.Domain.Models;
+﻿using BuildingBlocks.Models;
 
-/*
- * Mỗi tiêu chí (Criterion) sẽ tương ứng với một tiêu chí nhập ICU (1-1 relationship)
- * thay vì (1-many) -> Nếu nhiều bệnh xài chung 1 tiêu chí thì bảng Criterion sẽ bị lặp dữ liệu:
- * Pros: mỗi criterion gắn liền với IcuCriterion -> Việc update sẽ rất đơn giản, thay đổi tiêu chí ở bệnh
- * này không ảnh hưởng đến bệnh khác, thay vì 1-many thì phải tạo mới 1 tiêu chí
- * Cons: trùng lặp dữ liệu trên bảng Criterion
- */
+namespace RespiraAMS.Domain.Models;
 
 /// <summary>
-/// Tiêu chí nhập ICU.
+/// ICU hospitalizing criteria
 /// </summary>
 public class IcuHospitalizeCriterion : Base
 {
