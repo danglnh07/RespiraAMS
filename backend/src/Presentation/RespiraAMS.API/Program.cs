@@ -2,10 +2,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using BuildingBlocks.Middlewares;
 using RespiraAMS.Application;
-using RespiraAMS.Application.Features.AntibioticSpectra.CreateAntibioticSpectrum;
-using RespiraAMS.Application.Features.AntibioticSpectra.DeleteAntibioticSpectrum;
-using RespiraAMS.Application.Features.AntibioticSpectra.GetPagedAntibioticSpectrum;
-using RespiraAMS.Application.Features.AntibioticSpectra.UpdateAntibioticSpectrum;
 using RespiraAMS.Infrastructure;
 using Scalar.AspNetCore;
 using Wolverine;
@@ -15,7 +11,22 @@ using Wolverine.Postgresql;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure controllers
+// Get connection string
+var conn =  builder.Configuration.GetConnectionString("AppConn");
+if (conn is null)
+{
+    throw new InvalidOperationException("No connection string found");
+}
+
+// Get CORS setting
+var origins = builder.Configuration.GetSection("CORS").Get<string[]>();
+if (origins is null || origins.Length == 0)
+{
+    origins = ["*"];
+}
+
+// === Application configuration ===
+
 builder.Services
     .AddControllers()
     .AddJsonOptions(options =>
@@ -28,11 +39,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddProfiles();
 builder.Services.AddFluentValidators();
 builder.Services.AddExceptionHandler<ExceptionHandler>();
-var origins = builder.Configuration.GetSection("CORS").Get<string[]>();
-if (origins is null || origins.Length == 0)
-{
-    origins = ["*"];
-}
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
@@ -46,15 +52,9 @@ builder.AddInfrastructure();
 builder.Host.UseWolverine(opts =>
 {
     opts.RestoreV5Defaults();
-    opts.Discovery.IncludeAssembly(typeof(CreateAntibioticSpectrumHandler).Assembly);
-    opts.Discovery.IncludeAssembly(typeof(GetPagedAntibioticSpectrumHandler).Assembly);
-    opts.Discovery.IncludeAssembly(typeof(UpdateAntibioticSpectrumHandler).Assembly);
-    opts.Discovery.IncludeAssembly(typeof(DeleteAntibioticSpectrumHandler).Assembly);
-
-    var connectionString = builder.Configuration.GetConnectionString("AppConn") ??
-                           throw new InvalidOperationException("No connection string for app db");
-
-    opts.PersistMessagesWithPostgresql(connectionString, "app_db");
+    opts.Discovery.IncludeAssembly(typeof(ApplicationMarker).Assembly);
+    
+    opts.PersistMessagesWithPostgresql(conn, "app_db");
     opts.UseEntityFrameworkCoreTransactions();
 
     opts.UseFluentValidation(RegistrationBehavior.ExplicitRegistration);

@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using RespiraAMS.Application.Features.AntibioticSpectra.CreateAntibioticSpectrum;
 using RespiraAMS.Application.Features.AntibioticSpectra.DeleteAntibioticSpectrum;
-using RespiraAMS.Application.Features.AntibioticSpectra.GetPagedAntibioticSpectrum;
+using RespiraAMS.Application.Features.AntibioticSpectra.GetAntibioticSpectra;
+using RespiraAMS.Application.Features.AntibioticSpectra.GetPagedAntibioticSpectra;
+using PagedAntibioticSpectrumItem = RespiraAMS.Application.Features.AntibioticSpectra.GetPagedAntibioticSpectra.AntibioticSpectrumItem;
+using AntibioticSpectrumItem = RespiraAMS.Application.Features.AntibioticSpectra.GetAntibioticSpectra.AntibioticSpectrumItem;
 using RespiraAMS.Application.Features.AntibioticSpectra.UpdateAntibioticSpectrum;
 using Wolverine;
 
@@ -19,25 +22,33 @@ public class AntibioticSpectraController(IMessageBus bus) : ControllerBase
         var result = await bus.InvokeAsync<CreateAntibioticSpectrumResult>(request);
         return ApiResponse<CreateAntibioticSpectrumResult>.Ok(result, statusCode: StatusCodes.Status201Created);
     }
-
+    
     [HttpGet]
-    public async Task<ApiResponse<Pagination<GetPagedAntibioticSpectrumItem>>> GetAntibioticSpectrum(
-        [FromQuery] GetPagedAntibioticSpectrumQuery query)
+    public async Task<ApiResponse<Pagination<PagedAntibioticSpectrumItem>>> GetAntibioticSpectra(
+        [FromQuery] GetPagedAntibioticSpectraQuery query)
     {
-        var result = await bus.InvokeAsync<Pagination<GetPagedAntibioticSpectrumItem>>(query);
-        return ApiResponse<Pagination<GetPagedAntibioticSpectrumItem>>.Ok(result);
+        var result = await bus.InvokeAsync<Pagination<PagedAntibioticSpectrumItem>>(query);
+        return ApiResponse<Pagination<PagedAntibioticSpectrumItem>>.Ok(result);
     }
-
+    
+    [HttpGet]
+    [Route("list")]
+    public async Task<ApiResponse<IEnumerable<AntibioticSpectrumItem>>> GetAntibioticSpectra()
+    {
+        var result = await bus.InvokeAsync<IEnumerable<AntibioticSpectrumItem>>(new GetAntibioticSpectraQuery());
+        return ApiResponse<IEnumerable<AntibioticSpectrumItem>>.Ok(result);
+    }
+    
     [HttpPut]
     [Route("/api/antibiotic-spectra/{id:guid}")]
-    public async Task<ApiResponse<UpdateAntibioticSpectrumResult>> UpdateAntibioticSpectrum(
+    public async Task<ApiResponse> UpdateAntibioticSpectrum(
         Guid id, [FromBody] UpdateAntibioticSpectrumCommand request)
     {
         request.Id = id;
-        var result = await bus.InvokeAsync<UpdateAntibioticSpectrumResult>(request);
-        return ApiResponse<UpdateAntibioticSpectrumResult>.Ok(result);
+        await bus.InvokeAsync(request);
+        return ApiResponse.Ok(statusCode: StatusCodes.Status204NoContent);
     }
-
+    
     [HttpDelete]
     [Route("/api/antibiotic-spectra/{id:guid}")]
     public async Task<ApiResponse> DeleteAntibioticSpectrum(Guid id)

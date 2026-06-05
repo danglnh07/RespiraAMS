@@ -1,0 +1,59 @@
+﻿using BuildingBlocks.Dtos;
+using Microsoft.EntityFrameworkCore;
+using RespiraAMS.Application.Abstracts.CQRS;
+using RespiraAMS.Application.Abstracts.Data;
+using RespiraAMS.Application.Shared.Mappers;
+using X.PagedList.EF;
+
+namespace RespiraAMS.Application.Features.Antibiotics.GetPagedAntibiotics;
+
+public class GetPagedAntibioticsHandler(IDbContext context)
+    : IQueryHandler<GetPagedAntibioticsQuery, Pagination<AntibioticItem>>
+{
+    public async Task<Pagination<AntibioticItem>> HandleAsync(GetPagedAntibioticsQuery query)
+    {
+        // Construct filter
+        var queryable = context.Antibiotics.AsQueryable();
+        if (query.Filter is not null)
+        {
+            // Search by name (contains, case-insensitive)
+            if (query.Filter.Name is not null)
+            {
+                queryable = queryable
+                    .Where(x => EF.Functions.ILike(x.Name, $"%{query.Filter.Name}%"));
+            }
+
+            // Filter by spectrum
+            if (query.Filter.AntibioticSpectrumId is not null)
+            {
+                queryable = queryable.Where(x => x.AntibioticSpectrumId == query.Filter.AntibioticSpectrumId);
+            }
+
+            // Filter by category
+            if (query.Filter.Category is not null)
+            {
+                queryable = queryable.Where(x => x.Category == query.Filter.Category);
+            }
+        }
+
+        var antibiotics = await queryable
+            .OrderByDescending(x => x.CreatedAt)
+            .Include(x => x.AntibioticSpectrum)
+            .Select(x => new AntibioticItem()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                AntibioticSpectrum = new AntibioticSpectrumItem()
+                {
+                    Id = x.AntibioticSpectrum.Id,
+                    Name = x.AntibioticSpectrum.Name,
+                    Description = x.AntibioticSpectrum.Description,
+                },
+                Category = x.Category,
+                RouteOfAdministrations = x.RouteOfAdministrations,
+                Dosages = x.Dosages,
+            })
+            .ToPagedListAsync(query.Param.Page, query.Param.Size);
+        return MapperBase.ToPagination(antibiotics);
+    }
+}

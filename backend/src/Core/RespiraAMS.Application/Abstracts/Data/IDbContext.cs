@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using BuildingBlocks.Models;
 using Microsoft.EntityFrameworkCore;
 using RespiraAMS.Domain.Models;
 
@@ -19,4 +19,6 @@ public interface IDbContext
      Task<int> SaveChangesAsync();
      Task ExecuteInTransactionAsync(Func<Task> action, CancellationToken cancellationToken = default);
      Task ExecuteInTransactionAsync(Action action, CancellationToken cancellationToken = default);
+     T AttachStub<T>(Guid id) where T : Base;
+     void UpdateRelations<T>(ICollection<T> collection, IEnumerable<Guid>? ids) where T : Base;
 }

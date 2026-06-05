@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BuildingBlocks.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using RespiraAMS.Application.Abstracts.Data;
 using RespiraAMS.Domain.Models;
@@ -79,6 +80,59 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             },
             null,
             cancellationToken);
+    }
+
+    /// <summary>
+    /// Stubs are ONLY used to establish join-table FKs.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public T AttachStub<T>(Guid id) where T : Base
+    {
+        // If the entity has been tracked by EF Core
+        var tracked = Set<T>().Local.FirstOrDefault(x => x.Id == id);
+        if (tracked is not null)
+        {
+            return tracked;
+        }
+        
+        // Create a stub object (fake object that just has the ID) -> save memory
+        if (typeof(T) == typeof(Criterion))
+        {
+            // Criterion is abstract, so we instantiate a concrete subclass (e.g., NumericCriterion)
+            var criterionStub = new NumericCriterion { Id = id };
+        
+            // Attach to database set as Unchanged
+            Set<Criterion>().Attach(criterionStub);
+        
+            return (T)(object)criterionStub;
+        }
+        
+        var stub = Activator.CreateInstance<T>();
+        stub.Id = id;
+        Set<T>().Attach(stub);
+        return stub;
+    }
+
+    public void UpdateRelations<T>(ICollection<T> collection, IEnumerable<Guid>? ids) where T : Base
+    {
+        if (ids == null) return;
+        var newIds = ids.ToHashSet();
+
+        // Remove items no longer in the list
+        var toRemove = collection.Where(x => !newIds.Contains(x.Id)).ToList();
+        foreach (var item in toRemove)
+        {
+            collection.Remove(item);
+        }
+
+        // Add new items only
+        var existingIds = collection.Select(x => x.Id).ToHashSet();
+        foreach (var id in newIds.Where(id => !existingIds.Contains(id)))
+        {
+            collection.Add(AttachStub<T>(id));
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
