@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using BuildingBlocks.Middlewares;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using RespiraAMS.Application;
 using RespiraAMS.Infrastructure;
 using Scalar.AspNetCore;

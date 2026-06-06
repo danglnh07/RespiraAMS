@@ -3,9 +3,15 @@ using RespiraAMS.Application.Abstracts.CQRS;
 
 namespace RespiraAMS.Application.Features.Pathogens.GetPagedPathogens;
 
+public class PathogenFilter
+{
+    public string? Name { get; set; }
+}
+
 public class GetPagedPathogensQuery : IQuery
 {
     public PaginationParam Param { get; set; } = null!;
+    public PathogenFilter? Filter { get; set; }
 }
 
 public class PathogenItem

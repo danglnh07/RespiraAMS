@@ -37,8 +37,16 @@ public class UpdateTreatmentProtocolHandler(
             throw new BadRequestException("Not all medicine ids exists");
         }
         
-        // Get treatment protocol by ID
-        var protocol = await context.TreatmentProtocols.FindAsync(command.Id);
+        // Get treatment protocol by ID.
+        // We need to include the 2 lists here in other for the UpdateRelations to work correctly,
+        // since UpdateRelations will only add new criteria/antibiotic into the stub, while the command
+        // expected full value (including IDs that are not changed). Without loading, the 2 list would be
+        // empty -> UpdateRelations treat all IDs provided as new and try to insert them to stub -> 
+        // FK constraints violation
+        var protocol = await context.TreatmentProtocols
+            .Include(x => x.Medicines)
+            .Include(x => x.OtherCriteria)
+            .FirstOrDefaultAsync(x => x.Id == command.Id);
         if (protocol is null)
         {
             logger.LogWarning("Treatment protocol ID not found");

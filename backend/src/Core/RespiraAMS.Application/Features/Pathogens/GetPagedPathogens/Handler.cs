@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Dtos;
+using Microsoft.EntityFrameworkCore;
 using RespiraAMS.Application.Abstracts.CQRS;
 using RespiraAMS.Application.Abstracts.Data;
 using RespiraAMS.Application.Shared.Mappers;
@@ -11,7 +12,17 @@ public class GetPagedPathogensHandler(IDbContext context)
 {
     public async Task<Pagination<PathogenItem>> HandleAsync(GetPagedPathogensQuery query)
     {
-        var pathogens = await context.Pathogens
+        var queryable = context.Pathogens.AsQueryable();
+        if (query.Filter is not null)
+        {
+            if (query.Filter.Name is not null)
+            {
+                queryable = queryable
+                    .Where(x => EF.Functions.ILike(x.Name, $"%{query.Filter.Name}%"));
+            }
+        }
+
+        var pathogens = await queryable
             .OrderByDescending(x => x.CreatedAt)
             .Select(x => new PathogenItem()
             {

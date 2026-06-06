@@ -27,7 +27,6 @@ public class UpdatePathogenHandler(
         mapper.MapModel(pathogen, command);
         
         // Save changes to database
-        await context.Pathogens.AddAsync(pathogen);
         if (await context.SaveChangesAsync() <= 0)
         {
             logger.LogError("Failed to update pathogen");

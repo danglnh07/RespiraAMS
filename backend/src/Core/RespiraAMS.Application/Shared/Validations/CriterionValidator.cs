@@ -11,7 +11,7 @@ public class CreateCriterionValidator : AbstractValidator<CreateCriterionCommand
         RuleFor(c => c.Name)
             .NotEmpty().WithMessage("Criterion name is required");
         RuleFor(c => c.Type)
-            .NotEmpty().WithMessage("Invalid value for criterion type");
+            .IsInEnum().WithMessage("Invalid value for criterion type");
         When(x => x.Type == CriterionType.Numeric, () =>
         {
             RuleFor(x => x.Max)

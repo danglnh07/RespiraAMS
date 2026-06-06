@@ -25,11 +25,9 @@ public class CreateTreatmentProtocolValidator : AbstractValidator<CreateTreatmen
         RuleFor(x => x.SpecialInfectionId)
             .Must(x => x is null || x != Guid.Empty)
             .WithMessage("Treatment protocol special infection id must not be empty (zero) UUID");
-        RuleFor(x => x.OtherCriteriaIds)
-            .NotEmpty()
-            .WithMessage("Other criteria IDs must not be empty");
         RuleForEach(x => x.OtherCriteriaIds)
             .NotEmpty()
+            .When(x => x.OtherCriteriaIds.Count > 0)
             .WithMessage("Other criteria ID must be a valid UUID");
         RuleFor(x => x.MedicineIds)
             .NotEmpty()

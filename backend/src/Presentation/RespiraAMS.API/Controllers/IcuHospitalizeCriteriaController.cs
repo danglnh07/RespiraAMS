@@ -12,21 +12,17 @@ public class IcuHospitalizeCriteriaController(IMessageBus bus) : ControllerBase
 {
     [HttpPut]
     public async Task<ApiResponse> UpdateIcuHospitalizeCriterion(Guid id,
-        Guid icuId, [FromBody] UpdateIcuHospitalizeCriterionCommand request)
+        [FromBody] UpdateIcuHospitalizeCriterionCommand request)
     {
-        request.Id = icuId;
-        // We don't really need disease ID, but we will still add them to the route
-        // to make the API consistence
+        request.Id = id;
         await bus.InvokeAsync(request);
         return ApiResponse.Ok(statusCode: StatusCodes.Status204NoContent);
     }
 
     [HttpDelete]
-    public async Task<ApiResponse> RemoveIcuHospitalizeCriterion(Guid id, Guid icuId)
+    public async Task<ApiResponse> RemoveIcuHospitalizeCriterion(Guid id)
     {
-        // We don't really need disease ID, but we will still add them to the route
-        // to make the API consistence
-        await bus.InvokeAsync(new DeleteIcuHospitalizeCriterionCommand(icuId));
+        await bus.InvokeAsync(new DeleteIcuHospitalizeCriterionCommand(id));
         return ApiResponse.Ok(statusCode: StatusCodes.Status204NoContent);
     }
 }

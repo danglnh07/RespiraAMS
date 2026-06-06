@@ -11,20 +11,18 @@ namespace RespiraAMS.API.Controllers;
 public class ResistanceRiskFactorsController(IMessageBus bus) : ControllerBase
 {
     [HttpPut]
-    public async Task<ApiResponse> UpdateResistanceRiskFactor(Guid id, Guid riskId,
+    public async Task<ApiResponse> UpdateResistanceRiskFactor(Guid id,
         [FromBody] UpdateResistanceRiskFactorCommand request)
     {
-        request.Id = riskId;
+        request.Id = id;
         await bus.InvokeAsync(request);
         return ApiResponse.Ok(statusCode: StatusCodes.Status204NoContent);
     }
 
     [HttpDelete]
-    public async Task<ApiResponse> RemoveResistanceRiskFactor(Guid id, Guid riskId)
+    public async Task<ApiResponse> RemoveResistanceRiskFactor(Guid id)
     {
-        // We don't really need disease ID, but we will still add them to the route
-        // to make the API consistence
-        await bus.InvokeAsync(new DeleteResistanceRiskFactorCommand(riskId));
+        await bus.InvokeAsync(new DeleteResistanceRiskFactorCommand(id));
         return ApiResponse.Ok(statusCode: StatusCodes.Status204NoContent);
     }
 }

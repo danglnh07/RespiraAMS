@@ -20,19 +20,17 @@ public class UpdateTreatmentProtocolValidator : AbstractValidator<UpdateTreatmen
             .Must(x => DateTimeOffset.Compare(DateTimeOffset.UtcNow, x) >= 0)
             .WithMessage("Treatment protocol issue date must not be in future");
         RuleFor(x => x.Severity)
-            .NotEmpty()
+            .IsInEnum()
             .WithMessage("Invalid value for treatment protocol severity");
         RuleFor(x => x.TreatmentSite)
-            .NotEmpty()
+            .IsInEnum()
             .WithMessage("Invalid value for treatment protocol treatment site");
         RuleFor(x => x.SpecialInfectionId)
             .Must(x => x is null || x != Guid.Empty)
             .WithMessage("Treatment protocol special infection id must not be empty (zero) UUID");
-        RuleFor(x => x.OtherCriteriaIds)
-            .NotEmpty()
-            .WithMessage("Other criteria IDs must not be empty");
         RuleForEach(x => x.OtherCriteriaIds)
             .NotEmpty()
+            .When(x => x.OtherCriteriaIds.Count > 0)
             .WithMessage("Other criteria ID must be a valid UUID");
         RuleFor(x => x.MedicineIds)
             .NotEmpty()
