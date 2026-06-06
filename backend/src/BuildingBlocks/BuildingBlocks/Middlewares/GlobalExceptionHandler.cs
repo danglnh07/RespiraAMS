@@ -12,34 +12,47 @@ public class ExceptionHandler(ILogger<ExceptionHandler> logger) : IExceptionHand
     public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception,
         CancellationToken cancellationToken)
     {
-        logger.LogError("Exception: {exception}", new
+        logger.LogDebug("Exception: {exception}", new
         {
+            exception.TargetSite,
             exception.Message,
             context.Request.Path,
             Trace = exception.StackTrace
         });
 
         // Identify which exception type to handle
-        var (detail, status) = exception switch
+        string detail;
+        int status;
+
+        switch (exception)
         {
-            NotFoundException => (
-                exception.Message,
-                context.Response.StatusCode = StatusCodes.Status404NotFound
-            ),
-            BadRequestException => (
-                exception.Message,
-                context.Response.StatusCode = StatusCodes.Status400BadRequest
-            ),
-            ValidationException e => (
-                $"{exception.Message}: {string.Join(", ", e.Errors.Select(x => x.ErrorMessage))}",
-                context.Response.StatusCode = StatusCodes.Status400BadRequest
-            ),
-            // Custom InternalServerErrorException and any uncaught exception will be 500
-            _ => (
-                exception.Message,
-                context.Response.StatusCode = StatusCodes.Status500InternalServerError
-            )
-        };
+            case NotFoundException:
+                detail = exception.Message;
+                status = StatusCodes.Status404NotFound;
+                break;
+            case BadRequestException:
+                detail = exception.Message;
+                status = StatusCodes.Status400BadRequest;
+                break;
+            case ValidationException e:
+                detail = string.Join(", ", e.Errors.Select(x => x.ErrorMessage));
+                status = StatusCodes.Status400BadRequest;
+                break;
+            case InternalServerErrorException:
+                logger.LogError("Internal server error: {message}", exception.Message);
+                detail = exception.Message;
+                status = StatusCodes.Status500InternalServerError;
+                break;
+            default:
+                logger.LogCritical("Unexpected error occur: {exception}", new
+                {
+                    exception.TargetSite,
+                    exception.Message,
+                });
+                detail = exception.Message;
+                status = StatusCodes.Status500InternalServerError;
+                break;
+        }
 
         // Create ApiResponse
         var resp = ApiResponse.Fail(detail, status);

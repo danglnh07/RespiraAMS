@@ -1,7 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using BuildingBlocks.Dtos;
 using BuildingBlocks.Middlewares;
-using Microsoft.EntityFrameworkCore.Storage.Json;
+using Microsoft.AspNetCore.Mvc;
 using RespiraAMS.Application;
 using RespiraAMS.Infrastructure;
 using Scalar.AspNetCore;
@@ -13,7 +14,7 @@ using Wolverine.Postgresql;
 var builder = WebApplication.CreateBuilder(args);
 
 // Get connection string
-var conn =  builder.Configuration.GetConnectionString("AppConn");
+var conn = builder.Configuration.GetConnectionString("AppConn");
 if (conn is null)
 {
     throw new InvalidOperationException("No connection string found");
@@ -54,13 +55,27 @@ builder.Host.UseWolverine(opts =>
 {
     opts.RestoreV5Defaults();
     opts.Discovery.IncludeAssembly(typeof(ApplicationMarker).Assembly);
-    
+
     opts.PersistMessagesWithPostgresql(conn, "app_db");
     opts.UseEntityFrameworkCoreTransactions();
 
     opts.UseFluentValidation(RegistrationBehavior.ExplicitRegistration);
-    
+
     opts.Durability.Mode = DurabilityMode.Solo;
+});
+
+// Override InvalidModelStateResponseFactory to use the same ApiResponse format
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = ctx =>
+    {
+        // Create message from ModelState error
+        var message = string.Join(",", ctx.ModelState
+            .Where(x => x.Value?.Errors.Count > 0)
+            .SelectMany(x => x.Value!.Errors.Select(y => y.ErrorMessage)));
+        var resp = ApiResponse.Fail(message, StatusCodes.Status400BadRequest);
+        return new BadRequestObjectResult(resp);
+    };
 });
 
 var app = builder.Build();
