@@ -35,7 +35,7 @@ public class ExceptionHandler(ILogger<ExceptionHandler> logger) : IExceptionHand
                 status = StatusCodes.Status400BadRequest;
                 break;
             case ValidationException e:
-                detail = string.Join(", ", e.Errors.Select(x => x.ErrorMessage));
+                detail = string.Join("; ", e.Errors.Select(x => x.ErrorMessage));
                 status = StatusCodes.Status400BadRequest;
                 break;
             case InternalServerErrorException:

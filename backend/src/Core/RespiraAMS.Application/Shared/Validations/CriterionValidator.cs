@@ -12,6 +12,9 @@ public class CreateCriterionValidator : AbstractValidator<CreateCriterionCommand
             .NotEmpty().WithMessage("Criterion name is required");
         RuleFor(c => c.Type)
             .IsInEnum().WithMessage("Invalid value for criterion type");
+        
+        // When type is numeric, the specific properties of NumericCriterion 
+        // must exists and valid
         When(x => x.Type == CriterionType.Numeric, () =>
         {
             RuleFor(x => x.Max)
@@ -31,7 +34,23 @@ public class CreateCriterionValidator : AbstractValidator<CreateCriterionCommand
                 .NotNull()
                 .WithMessage("Criterion is exclusive is required");
         });
-        // Unit can still be empty, and is exclusive is a boolean, which has nothing to check 
+        
+        // When type is Boolean, all NumericCriterion properties must not exists
+        When(x => x.Type == CriterionType.Boolean, () =>
+        {
+            RuleFor(x => x.Min)
+                .Must(x => x == null)
+                .WithMessage("Criterion type is set to boolean, cannot accept value for Min");
+            RuleFor(x => x.Max)
+                .Must(x => x == null)
+                .WithMessage("Criterion type is set to boolean, cannot accept value for Max");
+            RuleFor(x => x.Unit)
+                .Must(x => x == null)
+                .WithMessage("Criterion type is set to boolean, cannot accept value for Unit");
+            RuleFor(x => x.IsExclusive)
+                .Must(x => x == null)
+                .WithMessage("Criterion type is set to boolean, cannot accept value for IsExclusive");
+        });
     }
 }
 
@@ -60,6 +79,20 @@ public class UpdateCriterionValidator : AbstractValidator<UpdateCriterionCommand
                 .NotNull()
                 .WithMessage("Criterion is exclusive is required");
         });
-        // Unit can still be empty, and is exclusive is a boolean, which has nothing to check 
+        When(x => x.Type == CriterionType.Boolean, () =>
+        {
+            RuleFor(x => x.Min)
+                .Must(x => x == null)
+                .WithMessage("Criterion type is set to boolean, cannot accept value for Min");
+            RuleFor(x => x.Max)
+                .Must(x => x == null)
+                .WithMessage("Criterion type is set to boolean, cannot accept value for Max");
+            RuleFor(x => x.Unit)
+                .Must(x => x == null)
+                .WithMessage("Criterion type is set to boolean, cannot accept value for Unit");
+            RuleFor(x => x.IsExclusive)
+                .Must(x => x == null)
+                .WithMessage("Criterion type is set to boolean, cannot accept value for IsExclusive");
+        });
     }
 }
