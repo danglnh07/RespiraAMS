@@ -8,7 +8,7 @@ public class CreateTreatmentProtocolCommand : ICommand
 {
     public string Name { get; set; } = string.Empty;
     public string Issuer {get; set; } = string.Empty;
-    public DateTimeOffset IssueDate { get; set; } = DateTimeOffset.UtcNow;
+    public DateOnly IssueDate { get; set; }
     public int Version { get; set; }
     [JsonIgnore] public Guid DiseaseId { get; set; }
     public Severity Severity { get; set; }

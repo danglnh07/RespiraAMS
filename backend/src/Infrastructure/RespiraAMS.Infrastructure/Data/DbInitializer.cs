@@ -453,7 +453,7 @@ public class DbInitializer
                 DiseaseId = disease.Id,
                 Name = "Phác đồ điều trị VPCĐ",
                 Issuer = "WHO",
-                IssueDate = DateTimeOffset.UtcNow,
+                IssueDate = DateOnly.FromDateTime(DateTime.UtcNow),
                 Version = 1,
                 Severity = Severity.Mild,
                 TreatmentSite = TreatmentSite.Outpatient,
@@ -470,7 +470,7 @@ public class DbInitializer
             {
                 Name = "Phác đồ điều trị VPCĐ",
                 Issuer = "WHO",
-                IssueDate = DateTimeOffset.UtcNow,
+                IssueDate = DateOnly.FromDateTime(DateTime.UtcNow),
                 Version = 3,
                 DiseaseId = disease.Id,
                 Severity = Severity.Mild,
@@ -497,7 +497,7 @@ public class DbInitializer
             {
                 Name = "Phác đồ điều trị VPCĐ",
                 Issuer = "WHO",
-                IssueDate = DateTimeOffset.UtcNow,
+                IssueDate = DateOnly.FromDateTime(DateTime.UtcNow),
                 Version = 7,
                 DiseaseId = disease.Id,
                 Severity = Severity.Moderate,
@@ -515,7 +515,7 @@ public class DbInitializer
             {
                 Name = "Phác đồ điều trị VPCĐ",
                 Issuer = "WHO",
-                IssueDate = DateTimeOffset.UtcNow,
+                IssueDate = DateOnly.FromDateTime(DateTime.UtcNow),
                 Version = 2,
                 DiseaseId = disease.Id,
                 Severity = Severity.Severe,
@@ -533,7 +533,7 @@ public class DbInitializer
             {
                 Name = "Phác đồ điều trị VPCĐ",
                 Issuer = "WHO",
-                IssueDate = DateTimeOffset.UtcNow,
+                IssueDate = DateOnly.FromDateTime(DateTime.UtcNow),
                 Version = 4,
                 DiseaseId = disease.Id,
                 Severity = Severity.Severe,
@@ -553,7 +553,7 @@ public class DbInitializer
             {
                 Name = "Phác đồ điều trị VPCĐ",
                 Issuer = "WHO",
-                IssueDate = DateTimeOffset.UtcNow,
+                IssueDate = DateOnly.FromDateTime(DateTime.UtcNow),
                 Version = 8,
                 DiseaseId = disease.Id,
                 Severity = Severity.Severe,

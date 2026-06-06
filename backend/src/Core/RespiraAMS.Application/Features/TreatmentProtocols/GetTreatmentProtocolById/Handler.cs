@@ -19,7 +19,7 @@ public class GetTreatmentProtocolByIdHandler(IDbContext context)
             .Select(x => new TreatmentProtocolResult()
             {
                 Id = x.Id,
-                LastUpdated = x.UpdatedAt,
+                UpdatedAt = x.UpdatedAt,
                 Name = x.Name,
                 Issuer =  x.Issuer,
                 IssueDate = x.IssueDate,

@@ -13,7 +13,7 @@ public class TreatmentProtocol : Base
     // Issuer (WHO, VietNam Ministry of Health,...)
     public string Issuer {get; set; } = string.Empty;
     // Date issuing
-    public DateTimeOffset IssueDate { get; set; }
+    public DateOnly IssueDate { get; set; }
     // Treatment protocol version
     public int Version { get; set; }
     

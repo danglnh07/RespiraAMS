@@ -71,7 +71,7 @@ public class GetDiseaseByIdHandler(IDbContext context) : IQueryHandler<GetDiseas
                     Issuer = y.Issuer,
                     IssueDate = y.IssueDate,
                     Version = y.Version,
-                    LastUpdated = y.UpdatedAt,
+                    UpdatedAt = y.UpdatedAt,
                 }).ToList(),
             })
             .FirstOrDefaultAsync();

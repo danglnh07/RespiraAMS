@@ -9,7 +9,7 @@ public class UpdateTreatmentProtocolCommand : ICommand
     [JsonIgnore] public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Issuer {get; set; } = string.Empty;
-    public DateTimeOffset IssueDate { get; set; } = DateTimeOffset.UtcNow;
+    public DateOnly IssueDate { get; set; }
     public int Version { get; set; }
     public Severity Severity { get; set; }
     public TreatmentSite TreatmentSite { get; set; }

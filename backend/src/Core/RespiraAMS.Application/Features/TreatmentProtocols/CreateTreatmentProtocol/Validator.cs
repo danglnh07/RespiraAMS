@@ -13,7 +13,7 @@ public class CreateTreatmentProtocolValidator : AbstractValidator<CreateTreatmen
             .NotEmpty()
             .WithMessage("Treatment protocol issuer is required");
         RuleFor(x => x.IssueDate)
-            .Must(x => DateTimeOffset.Compare(DateTimeOffset.UtcNow, x) >= 0)
+            .Must(x => x.CompareTo(DateTime.Now) <= 0)
             .WithMessage("Treatment protocol issue date must not be in future");
         RuleFor(x => x.Severity)
             .IsInEnum()

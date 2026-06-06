@@ -36,10 +36,10 @@ public class AntibioticItem
 public class TreatmentProtocolResult
 {
     public Guid Id { get; set; }
-    public DateTimeOffset LastUpdated { get; set; }
+    public DateTimeOffset UpdatedAt { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Issuer { get; set; } = string.Empty;
-    public DateTimeOffset IssueDate { get; set; }
+    public DateOnly IssueDate { get; set; }
     public int Version { get; set; }
     public Severity Severity { get; set; }
     public TreatmentSite TreatmentSite { get; set; }
