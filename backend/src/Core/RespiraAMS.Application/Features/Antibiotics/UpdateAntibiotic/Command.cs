@@ -10,6 +10,5 @@ public class UpdateAntibioticCommand : ICommand
     public string Name { get; set; } = string.Empty;
     public Guid AntibioticSpectrumId { get; set; }
     public AwareCategory Category { get; set; }
-    public List<RouteOfAdministration> RouteOfAdministrations { get; set; } = [];
     public Dictionary<RouteOfAdministration, List<string>> Dosages { get; set; } = [];
 }

@@ -12,7 +12,6 @@ public class CreateAntibioticMapper : ICreateMapper<Antibiotic, CreateAntibiotic
             Name = command.Name,
             AntibioticSpectrumId = command.AntibioticSpectrumId,
             Category = command.Category,
-            RouteOfAdministrations = command.RouteOfAdministrations,
             Dosages = command.Dosages,
         };
     }

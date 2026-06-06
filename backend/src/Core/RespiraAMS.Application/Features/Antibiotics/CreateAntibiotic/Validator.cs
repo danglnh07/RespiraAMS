@@ -16,12 +16,6 @@ public class CreateAntibioticValidator : AbstractValidator<CreateAntibioticComma
         RuleFor(x => x.Category)
             .IsInEnum()
             .WithMessage("Invalid value for antibiotic category");
-        RuleFor(x => x.RouteOfAdministrations)
-            .NotEmpty()
-            .WithMessage("Route of administrations are required");
-        RuleForEach(x => x.RouteOfAdministrations)
-            .IsInEnum()
-            .WithMessage("Invalid value for route of administrations");
         RuleFor(x => x.Dosages).IsDosagesValid();
     }
 }

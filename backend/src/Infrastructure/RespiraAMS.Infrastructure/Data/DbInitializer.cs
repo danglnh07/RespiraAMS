@@ -132,7 +132,6 @@ public class DbInitializer
                 Name = "Amoxicillin/ clavulanat",
                 AntibioticSpectrumId = spectra.Where(x => x.Name.Equals("β-lactam")).Select(x => x.Id).First(),
                 Category = AwareCategory.Access,
-                RouteOfAdministrations = [RouteOfAdministration.Oral],
                 Dosages = new Dictionary<RouteOfAdministration, List<string>>
                 {
                     { RouteOfAdministration.Oral, ["500/125 mg mỗi 8h", "875/125 mg mỗi 12h", "2g/125 mg mỗi 12h"] },
@@ -143,7 +142,6 @@ public class DbInitializer
                 Name = "Ampicillin/ sulbactam",
                 AntibioticSpectrumId = spectra.Where(x => x.Name.Equals("β-lactam")).Select(x => x.Id).First(),
                 Category = AwareCategory.Access,
-                RouteOfAdministrations = [RouteOfAdministration.Intravenous],
                 Dosages = new Dictionary<RouteOfAdministration, List<string>>
                 {
                     { RouteOfAdministration.Intravenous, ["1.5 - 3 g mỗi 6h"] },
@@ -154,7 +152,6 @@ public class DbInitializer
                 Name = "Azithromycin",
                 AntibioticSpectrumId = spectra.Where(x => x.Name.Equals("Macrolid")).Select(x => x.Id).First(),
                 Category = AwareCategory.Access,
-                RouteOfAdministrations = [RouteOfAdministration.Intravenous, RouteOfAdministration.Oral],
                 Dosages = new Dictionary<RouteOfAdministration, List<string>>
                 {
                     { RouteOfAdministration.Intravenous, ["250-500 mg mỗi 24h"] },
@@ -166,7 +163,6 @@ public class DbInitializer
                 Name = "Levofloxacin",
                 AntibioticSpectrumId = spectra.Where(x => x.Name.Equals("Fluoroquinolon")).Select(x => x.Id).First(),
                 Category = AwareCategory.Watch,
-                RouteOfAdministrations = [RouteOfAdministration.Intravenous, RouteOfAdministration.Oral],
                 Dosages = new Dictionary<RouteOfAdministration, List<string>>
                 {
                     { RouteOfAdministration.Intravenous, ["750 mg mỗi 24h", "500 mg mỗi 12h"] },
@@ -178,7 +174,6 @@ public class DbInitializer
                 Name = "Moxifloxacin",
                 AntibioticSpectrumId = spectra.Where(x => x.Name.Equals("Fluoroquinolon")).Select(x => x.Id).First(),
                 Category = AwareCategory.Watch,
-                RouteOfAdministrations = [RouteOfAdministration.Intravenous, RouteOfAdministration.Oral],
                 Dosages = new Dictionary<RouteOfAdministration, List<string>>
                 {
                     { RouteOfAdministration.Intravenous, ["400 mg mỗi 24h"] },
@@ -190,7 +185,6 @@ public class DbInitializer
                 Name = "Vancomycin",
                 AntibioticSpectrumId = spectra.Where(x => x.Name.Equals("Others")).Select(x => x.Id).First(),
                 Category = AwareCategory.AccessWatch,
-                RouteOfAdministrations = [RouteOfAdministration.Intravenous],
                 Dosages = new Dictionary<RouteOfAdministration, List<string>>
                 {
                     {
@@ -207,7 +201,6 @@ public class DbInitializer
                 Name = "Ciprofloxacin",
                 AntibioticSpectrumId = spectra.Where(x => x.Name.Equals("Fluoroquinolon")).Select(x => x.Id).First(),
                 Category = AwareCategory.Access,
-                RouteOfAdministrations = [RouteOfAdministration.Intravenous, RouteOfAdministration.Oral],
                 Dosages = new Dictionary<RouteOfAdministration, List<string>>
                 {
                     { RouteOfAdministration.Oral, ["500-750 mg/12h"] },

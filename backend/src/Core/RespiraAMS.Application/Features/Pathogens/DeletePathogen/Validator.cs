@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using RespiraAMS.Application.Shared.Validations;
 
 namespace RespiraAMS.Application.Features.Pathogens.DeletePathogen;
 

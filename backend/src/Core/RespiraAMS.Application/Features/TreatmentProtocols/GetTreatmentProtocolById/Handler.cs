@@ -53,11 +53,22 @@ public class GetTreatmentProtocolByIdHandler(IDbContext context)
                         Description = y.AntibioticSpectrum.Description,
                     },
                     Category = y.Category,
-                    RouteOfAdministrations = y.RouteOfAdministrations,
                     Dosages = y.Dosages,
                 }).ToList(),
             })
             .FirstOrDefaultAsync();
-        return protocol ?? throw new NotFoundException(nameof(TreatmentProtocol), query.Id);
+
+        if (protocol is null)
+        {
+            throw new NotFoundException(nameof(TreatmentProtocol), query.Id);
+        }
+        
+        // Extract the route of administrations from dosages
+        foreach (var medicine in protocol.Medicines)
+        {
+            medicine.RouteOfAdministrations = medicine.Dosages.Keys.ToList();
+        }
+        
+        return protocol;
     }
 }

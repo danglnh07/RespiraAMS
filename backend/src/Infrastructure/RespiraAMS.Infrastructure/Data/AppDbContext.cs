@@ -183,9 +183,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .Property(x => x.Category)
             .HasConversion<string>();
         modelBuilder.Entity<Antibiotic>()
-            .Property(x => x.RouteOfAdministrations)
-            .HasConversion<string>();
-        modelBuilder.Entity<Antibiotic>()
             .Property(x => x.Dosages)
             .HasConversion(DictionaryConverter.Converter)
             .Metadata.SetValueComparer(DictionaryConverter.DosageComparer);

@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using RespiraAMS.Application.Shared.Validations;
-
 namespace RespiraAMS.Application.Features.AntibioticSpectra.CreateAntibioticSpectrum;
 
 public class CreateAntibioticSpectrumValidator : AbstractValidator<CreateAntibioticSpectrumCommand>

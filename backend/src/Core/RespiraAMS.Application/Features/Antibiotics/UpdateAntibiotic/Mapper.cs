@@ -10,7 +10,6 @@ public class UpdateAntibioticMapper : IUpdateMapper<Antibiotic, UpdateAntibiotic
         model.Name = command.Name;
         model.AntibioticSpectrumId = command.AntibioticSpectrumId;
         model.Category = command.Category;
-        model.RouteOfAdministrations = command.RouteOfAdministrations;
         model.Dosages = command.Dosages;
         model.UpdatedAt = DateTimeOffset.UtcNow;
     }

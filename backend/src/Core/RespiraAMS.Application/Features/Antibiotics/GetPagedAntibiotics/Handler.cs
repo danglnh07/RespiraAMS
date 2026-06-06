@@ -36,6 +36,7 @@ public class GetPagedAntibioticsHandler(IDbContext context)
             }
         }
 
+        // Query antibiotics
         var antibiotics = await queryable
             .OrderByDescending(x => x.CreatedAt)
             .Include(x => x.AntibioticSpectrum)
@@ -50,10 +51,16 @@ public class GetPagedAntibioticsHandler(IDbContext context)
                     Description = x.AntibioticSpectrum.Description,
                 },
                 Category = x.Category,
-                RouteOfAdministrations = x.RouteOfAdministrations,
                 Dosages = x.Dosages,
             })
             .ToPagedListAsync(query.Param.Page, query.Param.Size);
+        
+        // Extract the route of administrations from dosages
+        foreach (var antibiotic in antibiotics)
+        {
+            antibiotic.RouteOfAdministrations = antibiotic.Dosages.Keys.ToList();
+        }
+        
         return MapperBase.ToPagination(antibiotics);
     }
 }

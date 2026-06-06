@@ -12,6 +12,5 @@ public class Antibiotic : Base
     public Guid AntibioticSpectrumId { get; set; }
     public AntibioticSpectrum AntibioticSpectrum { get; set; } = null!;
     public AwareCategory Category { get; set; }
-    public List<RouteOfAdministration> RouteOfAdministrations { get; set; } = [];
     public Dictionary<RouteOfAdministration, List<string>> Dosages { get; set; } = [];
 }
