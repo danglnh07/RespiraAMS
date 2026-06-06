@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using RespiraAMS.Application.Abstracts.CQRS;
 using RespiraAMS.Application.Abstracts.Data;
+using RespiraAMS.Application.Abstracts.Mappers;
 using RespiraAMS.Application.Shared.Dtos;
-using RespiraAMS.Domain.Enums;
 using RespiraAMS.Domain.Models;
 
 namespace RespiraAMS.Application.Features.Diseases.GetDiseaseById;
 
-public class GetDiseaseByIdHandler(IDbContext context) : IQueryHandler<GetDiseaseByIdQuery, DiseaseResult>
+public class GetDiseaseByIdHandler(IDbContext context, IResultMapper<Criterion, CriterionItem> mapper) : IQueryHandler<GetDiseaseByIdQuery, DiseaseResult>
 {
     public async Task<DiseaseResult> HandleAsync(GetDiseaseByIdQuery query)
     {
@@ -33,35 +33,13 @@ public class GetDiseaseByIdHandler(IDbContext context) : IQueryHandler<GetDiseas
                 {
                     Id = y.Id,
                     IsMainCriteria = y.IsMainCriteria,
-                    Criterion = new CriterionItem()
-                    {
-                        Id = y.Criterion.Id,
-                        Name = y.Criterion.Name,
-                        Type = y.Criterion.Type,
-                        Min = y.Criterion.Type == CriterionType.Numeric ? ((NumericCriterion)y.Criterion).Min : null,
-                        Max = y.Criterion.Type == CriterionType.Numeric ? ((NumericCriterion)y.Criterion).Max : null,
-                        Unit = y.Criterion.Type == CriterionType.Numeric ? ((NumericCriterion)y.Criterion).Unit : null,
-                        IsExclusive = y.Criterion.Type == CriterionType.Numeric
-                            ? ((NumericCriterion)y.Criterion).IsExclusive
-                            : null
-                    }
+                    Criterion = mapper.ToResult(y.Criterion)
                 }).ToList(),
                 ResistanceRisks = x.ResistanceRisks.Select(y => new ResistanceRiskFactorItem()
                 {
                     Id = y.Id,
                     Name = y.Name,
-                    Criterion = new CriterionItem()
-                    {
-                        Id = y.Criterion.Id,
-                        Name = y.Criterion.Name,
-                        Type = y.Criterion.Type,
-                        Min = y.Criterion.Type == CriterionType.Numeric ? ((NumericCriterion)y.Criterion).Min : null,
-                        Max = y.Criterion.Type == CriterionType.Numeric ? ((NumericCriterion)y.Criterion).Max : null,
-                        Unit = y.Criterion.Type == CriterionType.Numeric ? ((NumericCriterion)y.Criterion).Unit : null,
-                        IsExclusive = y.Criterion.Type == CriterionType.Numeric
-                            ? ((NumericCriterion)y.Criterion).IsExclusive
-                            : null
-                    },
+                    Criterion = mapper.ToResult(y.Criterion),
                     Pathogen = y.Pathogen.Name,
                 }).ToList(),
                 TreatmentProtocols = x.TreatmentProtocols.Select(y => new TreatmentProtocolItem()

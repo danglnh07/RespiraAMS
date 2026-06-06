@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RespiraAMS.Application.Features.DiseasePathogens.CreateDiseasePathogen;
 using RespiraAMS.Application.Features.Diseases.CreateDisease;
 using RespiraAMS.Application.Features.Diseases.DeleteDisease;
+using RespiraAMS.Application.Features.Diseases.GetDiagnosisTemplate;
 using RespiraAMS.Application.Features.Diseases.GetDiseaseById;
 using RespiraAMS.Application.Features.Diseases.GetDiseases;
 using RespiraAMS.Application.Features.Diseases.GetPagedDiseases;
@@ -49,6 +50,14 @@ public class DiseasesController(IMessageBus bus) : ControllerBase
     {
         var result = await bus.InvokeAsync<DiseaseResult>(new GetDiseaseByIdQuery(id));
         return ApiResponse<DiseaseResult>.Ok(result);
+    }
+
+    [HttpGet]
+    [Route("{id:guid}/template")]
+    public async Task<ApiResponse<DiagnosisTemplate>> GetDiagnosisTemplate(Guid id)
+    {
+        var result = await bus.InvokeAsync<DiagnosisTemplate>(new GetDiagnosisTemplateQuery(id));
+        return ApiResponse<DiagnosisTemplate>.Ok(result);
     }
 
     [HttpPut]

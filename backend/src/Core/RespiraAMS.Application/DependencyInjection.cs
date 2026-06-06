@@ -34,6 +34,7 @@ public static class DependencyInjection
     {
         services.AddScoped<ICreateMapper<Criterion, CreateCriterionCommand>, CreateCriterionMapper>();
         services.AddScoped<IUpdateMapper<Criterion, UpdateCriterionCommand>, UpdateCriterionMapper>();
+        services.AddScoped<IResultMapper<Criterion, CriterionItem>, CriterionResultMapper>();
         
         services.AddScoped<ICreateMapper<AntibioticSpectrum, CreateAntibioticSpectrumCommand>,
             CreateAntibioticSpectrumMapper>();

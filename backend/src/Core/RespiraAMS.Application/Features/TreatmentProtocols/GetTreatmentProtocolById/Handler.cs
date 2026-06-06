@@ -2,13 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using RespiraAMS.Application.Abstracts.CQRS;
 using RespiraAMS.Application.Abstracts.Data;
+using RespiraAMS.Application.Abstracts.Mappers;
 using RespiraAMS.Application.Shared.Dtos;
 using RespiraAMS.Domain.Enums;
 using RespiraAMS.Domain.Models;
 
 namespace RespiraAMS.Application.Features.TreatmentProtocols.GetTreatmentProtocolById;
 
-public class GetTreatmentProtocolByIdHandler(IDbContext context)
+public class GetTreatmentProtocolByIdHandler(
+    IDbContext context,
+    IResultMapper<Criterion, CriterionItem> criterionMapper)
     : IQueryHandler<GetTreatmentProtocolByIdQuery, TreatmentProtocolResult>
 {
     public async Task<TreatmentProtocolResult> HandleAsync(GetTreatmentProtocolByIdQuery query)
@@ -21,27 +24,21 @@ public class GetTreatmentProtocolByIdHandler(IDbContext context)
                 Id = x.Id,
                 UpdatedAt = x.UpdatedAt,
                 Name = x.Name,
-                Issuer =  x.Issuer,
+                Issuer = x.Issuer,
                 IssueDate = x.IssueDate,
-                Version =  x.Version,
-                Severity =  x.Severity,
+                Version = x.Version,
+                Severity = x.Severity,
                 TreatmentSite = x.TreatmentSite,
-                SpecialInfection = x.SpecialInfection == null ? null : new PathogenItem()
-                {
-                    Id = x.SpecialInfection.Id,
-                    Name = x.SpecialInfection.Name,
-                    Description = x.SpecialInfection.Description,
-                },
-                OtherCriteria = x.OtherCriteria.Select(y => new CriterionItem()
-                {
-                    Id = y.Id,
-                    Name = y.Name,
-                    Type = y.Type,
-                    Min = y.Type == CriterionType.Numeric ? ((NumericCriterion)y).Min : null,
-                    Max = y.Type == CriterionType.Numeric ? ((NumericCriterion)y).Max : null,
-                    Unit = y.Type == CriterionType.Numeric ? ((NumericCriterion)y).Unit : null,
-                    IsExclusive = y.Type == CriterionType.Numeric ? ((NumericCriterion)y).IsExclusive : null
-                }).ToList(),
+                SpecialInfection = x.SpecialInfection == null
+                    ? null
+                    : new PathogenItem()
+                    {
+                        Id = x.SpecialInfection.Id,
+                        Name = x.SpecialInfection.Name,
+                        Description = x.SpecialInfection.Description,
+                    },
+                // Do NOT convert this lambda expression into a method group, EF Core cannot execute it
+                OtherCriteria = x.OtherCriteria.Select(y => criterionMapper.ToResult(y)).ToList(),
                 Medicines = x.Medicines.Select(y => new AntibioticItem()
                 {
                     Id = y.Id,
@@ -62,13 +59,13 @@ public class GetTreatmentProtocolByIdHandler(IDbContext context)
         {
             throw new NotFoundException(nameof(TreatmentProtocol), query.Id);
         }
-        
+
         // Extract the route of administrations from dosages
         foreach (var medicine in protocol.Medicines)
         {
             medicine.RouteOfAdministrations = medicine.Dosages.Keys.ToList();
         }
-        
+
         return protocol;
     }
 }
