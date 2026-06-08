@@ -1,10 +1,12 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using RespiraAMS.Application.Abstracts.Mappers;
+using RespiraAMS.Application.Abstracts.Services;
 using RespiraAMS.Application.Features.Antibiotics.CreateAntibiotic;
 using RespiraAMS.Application.Features.Antibiotics.UpdateAntibiotic;
 using RespiraAMS.Application.Features.AntibioticSpectra.CreateAntibioticSpectrum;
 using RespiraAMS.Application.Features.AntibioticSpectra.UpdateAntibioticSpectrum;
+using RespiraAMS.Application.Features.Diagnose;
 using RespiraAMS.Application.Features.DiseasePathogens.CreateDiseasePathogen;
 using RespiraAMS.Application.Features.DiseasePathogens.UpdateDiseasePathogen;
 using RespiraAMS.Application.Features.Diseases.CreateDisease;
@@ -72,5 +74,10 @@ public static class DependencyInjection
     public static void AddFluentValidators(this IServiceCollection services)
     {
         services.AddValidatorsFromAssemblyContaining<ApplicationMarker>();
+    }
+
+    public static void AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<IDiagnoseService, DiagnoseService>();
     }
 }

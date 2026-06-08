@@ -40,6 +40,7 @@ builder.Services
 builder.Services.AddOpenApi();
 builder.Services.AddProfiles();
 builder.Services.AddFluentValidators();
+builder.Services.AddServices();
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddCors(options =>
 {

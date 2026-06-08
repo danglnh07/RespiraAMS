@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RespiraAMS.Application.Features.Antibiotics.CreateAntibiotic;
 using RespiraAMS.Application.Features.Antibiotics.DeleteAntibiotic;
+using RespiraAMS.Application.Features.Antibiotics.ExportAntibiotics;
 using RespiraAMS.Application.Features.Antibiotics.GetAntibiotics;
 using RespiraAMS.Application.Features.Antibiotics.GetPagedAntibiotics;
 using PagedAntibioticItem = RespiraAMS.Application.Features.Antibiotics.GetPagedAntibiotics.AntibioticItem;
@@ -54,5 +55,15 @@ public class AntibioticsController(IMessageBus bus) : ControllerBase
     {
         await bus.InvokeAsync(new DeleteAntibioticCommand(id));
         return ApiResponse.Ok(statusCode: StatusCodes.Status204NoContent);
+    }
+
+    [HttpGet]
+    [Route("export")]
+    public async Task<FileResult> Export()
+    {
+        const string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        const string filename = "antibiotics export";
+        var result = await bus.InvokeAsync<byte[]>(new ExportAntibioticsCommand());
+        return File(result, contentType, filename);
     }
 }
