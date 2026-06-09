@@ -3,7 +3,7 @@ using RespiraAMS.Domain.Enums;
 
 namespace RespiraAMS.Application.Features.Diagnose;
 
-public class DiagnoseCommand : ICommand
+public class DiagnoseQuery : IQuery
 {
     public Guid DiseaseId { get; set; }
     public bool Confusion { get; set; }

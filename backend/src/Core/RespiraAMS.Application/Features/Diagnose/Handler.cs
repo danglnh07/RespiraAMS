@@ -10,7 +10,7 @@ using RespiraAMS.Domain.Models;
 namespace RespiraAMS.Application.Features.Diagnose;
 
 public class DiagnoseHandler(IDbContext context, IDiagnoseService service, ILogger<DiagnoseHandler> logger)
-    : ICommandHandler<DiagnoseCommand, DiagnoseResult>
+    : IQueryHandler<DiagnoseQuery, DiagnoseResult>
 {
     /*
      * Flow:
@@ -32,7 +32,7 @@ public class DiagnoseHandler(IDbContext context, IDiagnoseService service, ILogg
      * 4.4. Sort by version and issue date
      */
 
-    public async Task<DiagnoseResult> HandleAsync(DiagnoseCommand command)
+    public async Task<DiagnoseResult> HandleAsync(DiagnoseQuery query)
     {
         // Get disease by ID
         var disease = await context.Diseases
@@ -50,43 +50,43 @@ public class DiagnoseHandler(IDbContext context, IDiagnoseService service, ILogg
             .Include(x => x.TreatmentProtocols)
             .ThenInclude(x => x.Medicines)
             .ThenInclude(x => x.AntibioticSpectrum)
-            .FirstOrDefaultAsync(x => x.Id == command.DiseaseId);
+            .FirstOrDefaultAsync(x => x.Id == query.DiseaseId);
 
         if (disease is null)
         {
             logger.LogWarning("Disease ID not found");
-            throw new NotFoundException(nameof(Disease), command.DiseaseId);
+            throw new NotFoundException(nameof(Disease), query.DiseaseId);
         }
 
         // Validation: check if all the provided criteria IDs exist
-        if (!command.IcuHospitalizeCriteria.All(x =>
+        if (!query.IcuHospitalizeCriteria.All(x =>
                 disease.IcuHospitalizeCriteria.Select(icu => icu.CriterionId).Contains(x)))
         {
             logger.LogWarning("Not all ICU hospitalize criteria ID exist");
             throw new BadRequestException("Not all ICU hospitalize criteria ID exist");
         }
 
-        if (!command.ResistanceRiskFactors.All(x =>
+        if (!query.ResistanceRiskFactors.All(x =>
                 disease.ResistanceRisks.Select(risk => risk.CriterionId).Contains(x)))
         {
             logger.LogWarning("Not all resistance risk factors ID exist");
             throw new BadRequestException("Not all resistance risk factors ID exist");
         }
 
-        if (await context.Criteria.CountAsync(x => command.OtherCriteria.Contains(x.Id)) !=
-            command.OtherCriteria.Count)
+        if (await context.Criteria.CountAsync(x => query.OtherCriteria.Contains(x.Id)) !=
+            query.OtherCriteria.Count)
         {
             logger.LogWarning("Not all other criteria IDs exists");
             throw new BadRequestException("Not all other criteria IDs exists");
         }
 
         // Assess severity and treatment site using CURB-65 metrics
-        var (severity, treatmentSite) = service.Curb65(command.Confusion, command.Urea, command.Respiratory,
-            command.Systolic, command.Diastolic, command.Age);
+        var (severity, treatmentSite) = service.Curb65(query.Confusion, query.Urea, query.Respiratory,
+            query.Systolic, query.Diastolic, query.Age);
 
         // Assess if patient need ICU
         if (service.NeedIcu(disease.IcuHospitalizeCriteria, disease.RequiredIcuMainCriteria,
-                disease.RequiredIcuSecondaryCriteria, command.IcuHospitalizeCriteria))
+                disease.RequiredIcuSecondaryCriteria, query.IcuHospitalizeCriteria))
         {
             // Here, we will prioritize the AST criteria for ICU hospitalization than CURB-65
             treatmentSite = TreatmentSite.IntensiveCareUnit;
@@ -94,7 +94,7 @@ public class DiagnoseHandler(IDbContext context, IDiagnoseService service, ILogg
 
         // Get infection probability
         var probabilities = service
-            .AssessInfectionProbability(disease.ResistanceRisks, command.ResistanceRiskFactors);
+            .AssessInfectionProbability(disease.ResistanceRisks, query.ResistanceRiskFactors);
 
         // Get treatment protocols by severity and treatment site
         var protocols = disease.TreatmentProtocols
@@ -108,7 +108,7 @@ public class DiagnoseHandler(IDbContext context, IDiagnoseService service, ILogg
             .OrderByDescending(p => p.Severity == severity && p.TreatmentSite == treatmentSite ? 1 : 0)
             .ThenByDescending(p =>
                 p.SpecialInfectionId is not null ? probs.GetValueOrDefault(p.SpecialInfectionId.Value, 0d) : 0d)
-            .ThenByDescending(p => p.OtherCriteria.Count(c => command.OtherCriteria.Contains(c.Id)))
+            .ThenByDescending(p => p.OtherCriteria.Count(c => query.OtherCriteria.Contains(c.Id)))
             .ThenByDescending(p => p.Version)
             .ThenByDescending(p => p.IssueDate);
         

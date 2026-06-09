@@ -10,7 +10,7 @@ namespace RespiraAMS.API.Controllers;
 public class DiagnoseController(IMessageBus bus) : ControllerBase
 {
     [HttpPost]
-    public async Task<ApiResponse<DiagnoseResult>> Diagnose([FromBody] DiagnoseCommand request)
+    public async Task<ApiResponse<DiagnoseResult>> Diagnose([FromBody] DiagnoseQuery request)
     {
         var result = await bus.InvokeAsync<DiagnoseResult>(request);
         return ApiResponse<DiagnoseResult>.Ok(result);

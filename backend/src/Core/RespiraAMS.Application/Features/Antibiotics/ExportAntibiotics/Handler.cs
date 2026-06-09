@@ -98,7 +98,7 @@ public class ExportAntibioticsHandler(IDbContext context, ILogger<ExportAntibiot
         worksheet.Column("C").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         worksheet.Columns().AdjustToContents();
 
-        var result = new MemoryStream();
+        using var result = new MemoryStream();
         workbook.SaveAs(result);
 
         sw.Stop();

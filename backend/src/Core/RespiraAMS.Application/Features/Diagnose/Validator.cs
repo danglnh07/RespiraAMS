@@ -2,7 +2,7 @@
 
 namespace RespiraAMS.Application.Features.Diagnose;
 
-public class DiagnoseValidator : AbstractValidator<DiagnoseCommand>
+public class DiagnoseValidator : AbstractValidator<DiagnoseQuery>
 {
     public DiagnoseValidator()
     {
